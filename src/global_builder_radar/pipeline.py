@@ -16,6 +16,7 @@ from global_builder_radar.extraction import enrich_opportunity
 from global_builder_radar.models import CollectionResult, SourceConfig
 from global_builder_radar.registry import build_collector
 from global_builder_radar.scoring import score_opportunity
+from global_builder_radar.service_domains import classify_service_domains
 from global_builder_radar.storage import RadarStore
 
 LOGGER = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ async def run_collection(
         for opportunity in result.opportunities:
             opportunity.category = classify_opportunity_kind(opportunity)
             enrich_opportunity(opportunity)
+            opportunity.service_domains = classify_service_domains(opportunity)
             opportunity.score = score_opportunity(opportunity, rules)
         inserted, updated = store.record_result(result)
         LOGGER.info(

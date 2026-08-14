@@ -89,6 +89,7 @@ class Opportunity(BaseModel):
     technologies: list[str] = Field(default_factory=list)
     effort_evidence: str | None = None
     brazil_eligibility: BrazilEligibility = BrazilEligibility.UNKNOWN
+    service_domains: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
     raw_payload: dict[str, Any] = Field(default_factory=dict)
     collected_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
@@ -111,6 +112,11 @@ class Opportunity(BaseModel):
     @field_validator("technologies")
     @classmethod
     def normalize_technologies(cls, values: list[str]) -> list[str]:
+        return sorted({value.strip().lower() for value in values if value.strip()})
+
+    @field_validator("service_domains")
+    @classmethod
+    def normalize_service_domains(cls, values: list[str]) -> list[str]:
         return sorted({value.strip().lower() for value in values if value.strip()})
 
     @computed_field

@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import csv
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
 
@@ -26,6 +27,7 @@ from global_builder_radar.config import (
 )
 from global_builder_radar.logging_config import configure_logging
 from global_builder_radar.pipeline import run_collection
+from global_builder_radar.scoring import basic_quality, freshness_days
 from global_builder_radar.storage import RadarStore
 
 app = typer.Typer(no_args_is_help=True, help="Global Builder Opportunity Radar")
@@ -36,6 +38,29 @@ def _store() -> RadarStore:
     store = RadarStore(database_path())
     store.initialize()
     return store
+
+
+def _row_domains(row: dict) -> list[str]:
+    try:
+        return json.loads(row.get("service_domains_json") or "[]")
+    except json.JSONDecodeError:
+        return []
+
+
+def _row_signals(row: dict) -> tuple[int | None, float]:
+    """Basic freshness (days) and quality (0-1) for a stored row."""
+
+    now = datetime.now(UTC)
+    age = freshness_days(row.get("published_at"), now)
+    if age is None:
+        age = freshness_days(row.get("first_seen_at"), now)
+    quality = basic_quality(
+        row.get("compensation_text"),
+        row.get("description") or "",
+        row.get("contact"),
+        bool(row.get("published_at") or row.get("deadline")),
+    )
+    return age, quality
 
 
 @app.command("init-db")
@@ -128,18 +153,30 @@ def report(
         include_traditional=include_traditional,
     )
     normalized = [dict(row) for row in rows]
+    for row in normalized:
+        age, quality = _row_signals(row)
+        row["service_domains"] = _row_domains(row)
+        row["freshness_days"] = age
+        row["quality_score"] = quality
     if output_format == "table":
-        table = Table("#", "Score", "Source", "Category", "Title", "Contact", "Pay", "URL")
+        table = Table(
+            "#", "Score", "Source", "Category", "Domains", "Title", "Contact", "Pay",
+            "Age d", "Quality", "URL",
+        )
         for index, row in enumerate(rows, start=1):
             link = Text("open", style=f"link {row['url']}")
+            age, quality = _row_signals(dict(row))
             table.add_row(
                 str(index),
                 str(row["score"]),
                 row["source"],
                 row["category"],
+                ", ".join(_row_domains(dict(row))) or "—",
                 row["title"][:70],
                 row["contact"] or row["contact_type"] or "—",
                 row["compensation_text"] or "—",
+                str(age) if age is not None else "—",
+                f"{quality:.2f}",
                 link,
             )
         console.print(table)
@@ -159,7 +196,14 @@ def report(
             body.append("Pay: ", style="bold")
             body.append(f"{row['compensation_text'] or '—'}  ")
             body.append("Contact: ", style="bold")
-            body.append(f"{row['contact'] or row['contact_type'] or '—'}\n\n")
+            body.append(f"{row['contact'] or row['contact_type'] or '—'}\n")
+            age, quality = _row_signals(dict(row))
+            body.append("Domains: ", style="bold")
+            body.append(f"{', '.join(_row_domains(dict(row))) or 'unknown'}  ")
+            body.append("Age: ", style="bold")
+            body.append(f"{age if age is not None else '—'}d  ")
+            body.append("Quality: ", style="bold")
+            body.append(f"{quality:.2f}\n\n")
             body.append(f"{description or 'No description provided.'}\n\n")
             body.append(row["url"], style=f"link {row['url']}")
             console.print(Panel(body, title=Text(f"{index}. {row['title']}"), border_style="blue"))

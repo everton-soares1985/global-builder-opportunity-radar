@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS opportunities (
     technologies_json TEXT NOT NULL DEFAULT '[]',
     effort_evidence TEXT,
     brazil_eligibility TEXT NOT NULL DEFAULT 'unknown',
+    service_domains_json TEXT NOT NULL DEFAULT '[]',
     tags_json TEXT NOT NULL,
     raw_payload_json TEXT NOT NULL,
     score REAL NOT NULL,
@@ -72,6 +73,7 @@ _COLUMN_MIGRATIONS: tuple[tuple[str, str], ...] = (
     ("technologies_json", "TEXT NOT NULL DEFAULT '[]'"),
     ("effort_evidence", "TEXT"),
     ("brazil_eligibility", "TEXT NOT NULL DEFAULT 'unknown'"),
+    ("service_domains_json", "TEXT NOT NULL DEFAULT '[]'"),
 )
 
 
@@ -119,11 +121,12 @@ class RadarStore:
                         contact_type, contact, compensation_text, compensation_amount_min,
                         compensation_amount_max, compensation_currency, compensation_unit,
                         published_at, deadline, deadline_evidence, location, remote,
-                        technologies_json, effort_evidence, brazil_eligibility, tags_json,
+                        technologies_json, effort_evidence, brazil_eligibility,
+                        service_domains_json, tags_json,
                         raw_payload_json, score, status
                     ) VALUES (
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                        ?, ?, ?
+                        ?, ?, ?, ?
                     )
                     ON CONFLICT(fingerprint) DO UPDATE SET
                         title = excluded.title,
@@ -144,6 +147,7 @@ class RadarStore:
                         technologies_json = excluded.technologies_json,
                         effort_evidence = excluded.effort_evidence,
                         brazil_eligibility = excluded.brazil_eligibility,
+                        service_domains_json = excluded.service_domains_json,
                         tags_json = excluded.tags_json,
                         raw_payload_json = excluded.raw_payload_json,
                         score = excluded.score,
@@ -173,6 +177,7 @@ class RadarStore:
                         json.dumps(opportunity.technologies, ensure_ascii=False),
                         opportunity.effort_evidence,
                         opportunity.brazil_eligibility.value,
+                        json.dumps(opportunity.service_domains, ensure_ascii=False),
                         json.dumps(opportunity.tags, ensure_ascii=False),
                         opportunity.raw_payload_json(),
                         opportunity.score,

@@ -74,15 +74,28 @@ Acceptance criteria: every enabled source passes `docs/source-admission.md`; the
 contains no ordinary employment; health output is truthful for every source; the freeze decision
 is recorded in `docs/sources.md` and `docs/current-work.md`.
 
-### Phase 3.2 — filter and prioritize
+### Phase 3.2 — filter and prioritize — CLOSED Phase 3 (2026-08-14)
 
-- [ ] Add a simple deterministic service-area classifier (`service_domains`) without changing
+- [x] Add a simple deterministic service-area classifier (`service_domains`) without changing
   opportunity-kind semantics, covering at least: programming, automation, scraping, AI,
   marketing, CRM, and RevOps.
-- [ ] Persist and export `service_domains` alongside the existing structured fields.
-- [ ] Add only basic quality and freshness signals (for example source health and recency)
+  Completed 2026-08-14: `service_domains.py` keyword classifier; exactly the seven domains;
+  unknown stays unknown (empty list); tests in `tests/test_service_domains.py`.
+- [x] Persist and export `service_domains` alongside the existing structured fields.
+  Completed 2026-08-14: additive `service_domains_json` column, pipeline labeling, legacy-ledger
+  migration default, JSON/CSV exports include `service_domains`, `freshness_days`, and
+  `quality_score`.
+- [x] Add only basic quality and freshness signals (for example source health and recency)
   to scoring or reporting; no sophisticated metrics in Phase 3.
-- [ ] Close Phase 3 and record the closure evidence.
+  Completed 2026-08-14: `basic_quality` (four evidence checks, 0-1) and `freshness_days`
+  (age from timestamp evidence) are report-only signals; ranking is unchanged.
+- [x] Close Phase 3 and record the closure evidence.
+  Completed 2026-08-14: evidence block in `docs/current-work.md`; ledger backfilled offline;
+  reports regenerated with the new fields.
+
+Phase 3 closure: 105 offline tests pass, Ruff is clean, the publication gate stays READY, the
+source catalog is frozen (Phase 3.1), and no AI, new sources, or sophisticated metrics were
+introduced.
 
 Acceptance criteria: service-domain labels never reintroduce permanent employment; unknown domains
 stay unknown; deterministic validation remains offline; Phase 3 closes with every gate green.

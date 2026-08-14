@@ -5,14 +5,14 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 
 ## Current position
 
-- Current phase: **Phase 3 — source consolidation, filtering, and prioritization** (two blocks:
-  3.1 and 3.2; former units 3C–3H are retired and live in the roadmap backlog).
-- Completed prerequisites: Phases 1 and 2, including all independent review blockers.
-- Current work unit: **Phase 3.2 — filter and prioritize** (service_domains classifier + basic
-  quality/freshness, then close Phase 3).
+- Current phase: **Phase 3 — CLOSED** (2026-08-14). Former units 3C–3H are retired and live
+  in the roadmap backlog.
+- Completed prerequisites: Phases 1, 2, and 3, including all independent review blockers.
+- Current work unit: **none** — Phase 3 is closed; the next roadmap phase (review workflow and
+  briefing) starts only with explicit user authorization.
 - Last completed units: **3A — Reddit source expansion** (2026-08-13), **3B — HN freelancer
-  thread admission** (2026-08-14), and **Phase 3.1 — consolidate essential sources** (2026-08-14,
-  catalog frozen); evidence below.
+  thread admission** (2026-08-14), **Phase 3.1 — consolidate essential sources** (2026-08-14,
+  catalog frozen), and **Phase 3.2 — filter and prioritize** (2026-08-14); evidence below.
 - Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
   OmniRoute, and VPS scheduling.
 
@@ -62,7 +62,7 @@ Constraints: opportunity_kind semantics stay unchanged; unknown domains stay unk
 | 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **Complete** (2026-08-13) |
 | 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **Complete** (2026-08-14) |
 | 3.1 | Consolidate essential sources: replace/retire indirect Algora, verify Superteam, freeze catalog | 3A/3B | **Complete** (2026-08-14) |
-| 3.2 | Filter and prioritize: `service_domains` classifier + basic quality/freshness, close Phase 3 | 3.1 | **NEXT** |
+| 3.2 | Filter and prioritize: `service_domains` classifier + basic quality/freshness, close Phase 3 | 3.1 | **Complete** (2026-08-14) |
 
 Former units 3C–3H are retired as independent units; their scope either folds into 3.1/3.2 or
 moves to the Phase 3 backlog in `docs/roadmap.md` (additional sources, hackathons, Apify,
@@ -196,5 +196,38 @@ Remaining risks: Superteam uses browser scraping (card selectors may change; the
   tabs are backlog; Reddit rate limits remain intermittent but isolated.
 Next work unit: Phase 3.2 — service_domains classifier (programming, automation, scraping, AI,
   marketing, CRM, RevOps) + basic quality/freshness, then close Phase 3.
+Commit/push status: pending user authorization.
+```
+
+## Phase 3.2 completion evidence (2026-08-14) — Phase 3 CLOSED
+
+```text
+Work unit completed: Phase 3.2 — filter and prioritize; Phase 3 closed.
+Scope delivered:
+  - service_domains.py: deterministic keyword classifier with exactly seven domains
+    (ai, automation, crm, marketing, programming, revops, scraping); unknown stays unknown
+    (empty list); labels never touch opportunity kind, quarantine, or ranking.
+  - Persistence: additive service_domains_json column (schema + legacy migration default '[]'),
+    pipeline labels every opportunity after enrichment, upsert persists it.
+  - Exports/reports: JSON and CSV now include service_domains, freshness_days, and
+    quality_score; table and detailed reports show Domains/Age/Quality columns.
+  - Basic signals only: basic_quality = four evidence checks (pay, description >= 80 words,
+    contact, date evidence) at 0.25 each; freshness_days = age from published_at/first_seen_at.
+    No AI, no new sources, no sophisticated metrics.
+Offline tests: 105 tests pass (pytest -q), ruff clean; new tests/test_service_domains.py
+  (7 domains, boundaries, unknown, tags/description sources, kind independence), plus scoring
+  and storage tests for the new signals, migration default, and pipeline persistence.
+Ledger evidence: frozen-catalog re-collection labeled refreshed rows; a one-off offline backfill
+  re-derived domains from stored text for older rows (114/210 labeled); remaining rows are
+  honestly unknown. Reports regenerated (reports/opportunities.{json,csv}).
+Files changed: src/global_builder_radar/service_domains.py (new), models.py, storage.py,
+  pipeline.py, scoring.py, cli.py, tests/test_service_domains.py (new), tests/test_scoring.py,
+  tests/test_storage.py, tests/test_pipeline.py.
+Documentation updated: docs/roadmap.md (Phase 3 closure), docs/module-map.md, CHANGELOG.md,
+  QWEN_HANDOFF.md, this file.
+Remaining risks: keyword labels carry normal deterministic noise (e.g. video-editing posts can
+  pick up automation); the catalog stays frozen, so label coverage grows only with refreshed
+  rows; Phase 4 (review workflow/briefing) is not started.
+Next work unit: none — Phase 3 is closed; await user direction for Phase 4.
 Commit/push status: pending user authorization.
 ```

@@ -104,6 +104,9 @@ acquisition, fellowships, ambassador programs, and sophisticated metrics live in
 backlog in `docs/roadmap.md`; do not resurrect them as Phase 3 work without explicit user
 approval.
 
+Status: Phase 3 is **closed** (2026-08-14) with both blocks complete and the catalog frozen;
+see the completion evidence in `docs/current-work.md`.
+
 ## Engineering rules
 
 - Python 3.12 and PowerShell are the supported local environment.

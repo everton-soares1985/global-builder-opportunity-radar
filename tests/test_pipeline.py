@@ -1,4 +1,5 @@
 import asyncio
+import json
 from pathlib import Path
 
 from global_builder_radar import registry
@@ -72,6 +73,8 @@ def test_pipeline_classifies_and_isolates_failures(
     default_rows = store.list_opportunities()
     assert [row["title"] for row in default_rows] == ["Contract automation developer"]
     assert default_rows[0]["category"] == "contract"
+    # Phase 3.2: the pipeline labels and persists service domains.
+    assert json.loads(default_rows[0]["service_domains_json"]) == ["automation"]
 
     audit_rows = store.list_opportunities(include_traditional=True)
     categories = {row["external_id"]: row["category"] for row in audit_rows}

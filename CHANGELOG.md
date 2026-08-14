@@ -27,6 +27,10 @@ All notable changes to this project will be documented in this file.
   no official Algora integration is built in Phase 3; Superteam Earn is verified with offline
   fixtures and live smoke; the source catalog is frozen at Reddit r/forhire, r/slavelabour, HN
   freelancer thread, Opire, and Superteam Earn until Phase 3.2 closes Phase 3.
+- Phase 3.2 (2026-08-14) closes Phase 3: a deterministic `service_domains` classifier labels
+  opportunities with the seven service areas (programming, automation, scraping, AI, marketing,
+  CRM, RevOps); unknown stays unknown. Labels are persisted and exported but never influence
+  opportunity kind, quarantine, or ranking. Basic quality and freshness are report-only signals.
 
 ### Added
 
@@ -43,6 +47,12 @@ All notable changes to this project will be documented in this file.
   offline-testable function with sanitized Superteam fixture
   `tests/fixtures/superteam_listing_sample.html` and parser tests in
   `tests/test_scrapling_links.py`.
+- `service_domains.py`: deterministic seven-domain service-area classifier with offline tests in
+  `tests/test_service_domains.py`; the pipeline labels every opportunity after enrichment.
+- Additive SQLite column `service_domains_json` (legacy ledgers default to `'[]'`); JSON/CSV
+  exports and reports now include `service_domains`, `freshness_days`, and `quality_score`.
+- `basic_quality` and `freshness_days` report signals in `scoring.py` (report-only; ranking is
+  unchanged).
 
 - Structured evidence extraction (`extraction.py`): compensation amount/range/currency/unit,
   explicit deadlines with source evidence, technology list, effort evidence, and Brazil

@@ -8,6 +8,7 @@ Configuration:
 from __future__ import annotations
 
 import re
+from datetime import UTC, datetime
 
 from global_builder_radar.config import ProfileRules
 from global_builder_radar.models import Opportunity
@@ -45,3 +46,41 @@ def score_opportunity(opportunity: Opportunity, rules: ProfileRules) -> float:
     if opportunity.deadline:
         score += rules.bonuses.get("deadline_visible", 0)
     return max(0.0, round(score, 2))
+
+
+def basic_quality(
+    compensation_text: str | None,
+    description: str,
+    contact: str | None,
+    date_evidence: bool,
+) -> float:
+    """Basic evidence completeness: four deterministic checks, 0.25 each.
+
+    This is a reporting signal only; it never feeds ranking or quarantine.
+    """
+
+    checks = (
+        bool(compensation_text),
+        len(" ".join(description.split())) >= 80,
+        bool(contact),
+        date_evidence,
+    )
+    return round(sum(checks) / len(checks), 2)
+
+
+def freshness_days(reference: str | None, now: datetime) -> int | None:
+    """Age in days from an ISO-ish timestamp string; None without evidence.
+
+    Timestamps without a timezone are treated as UTC (SQLite
+    CURRENT_TIMESTAMP format).
+    """
+
+    if not reference:
+        return None
+    try:
+        parsed = datetime.fromisoformat(reference)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return max(0, (now - parsed).days)

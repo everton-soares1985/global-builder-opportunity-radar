@@ -48,9 +48,10 @@ explicit authorization.
 
 ## Expected first action
 
-Phases 1, 2, Phase 3 units 3A (Reddit admission), 3B (HN freelancer thread), and Phase 3.1
-(source consolidation with a frozen catalog: Algora retired, Superteam verified) are complete.
-The next work is **Phase 3.2** in `docs/current-work.md`: add the simple deterministic
-`service_domains` classifier (programming, automation, scraping, AI, marketing, CRM, RevOps)
-with persistence/export, add only basic quality/freshness signals, then close Phase 3. Do not
-add new sources — the catalog is frozen. Stop after Phase 3 closure and report evidence.
+Phases 1, 2, and 3 are complete. Phase 3 closed on 2026-08-14 with a frozen source catalog
+(Reddit r/forhire, r/slavelabour, HN freelancer thread, Opire, Superteam Earn enabled; Algora
+retired) and a deterministic seven-domain `service_domains` classifier plus basic
+quality/freshness report signals. The next roadmap phase is **Phase 4 — review workflow and
+briefing**, but it starts only with explicit user authorization; the Phase 3 backlog (additional
+sources, hackathons, Apify, fellowships, sophisticated metrics) also requires approval. Report
+before starting anything new.

@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from pathlib import Path
 
@@ -7,7 +8,7 @@ from global_builder_radar.models import (
     OpportunityCategory,
     OpportunityStatus,
 )
-from global_builder_radar.storage import RadarStore
+from global_builder_radar.storage import SCHEMA, RadarStore
 
 
 def test_store_upserts_duplicate_fingerprint(tmp_path: Path) -> None:
@@ -57,6 +58,46 @@ def test_store_filters_paid_category_and_contact(tmp_path: Path) -> None:
         categories=["bounty"], paid_only=True, with_contact=True
     )
     assert [row["title"] for row in rows] == ["Paid bounty"]
+
+
+def test_store_persists_service_domains(tmp_path: Path) -> None:
+    store = RadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    opportunity = Opportunity(
+        source="test",
+        category=OpportunityCategory.FREELANCE,
+        external_id="domains",
+        title="Automation setup",
+        url="https://example.com/domains",
+        service_domains=["automation", "crm"],
+    )
+    store.record_result(CollectionResult(source="test", opportunities=[opportunity]))
+    rows = store.list_opportunities()
+    assert json.loads(rows[0]["service_domains_json"]) == ["automation", "crm"]
+
+
+def test_legacy_ledger_gets_empty_service_domains_default(tmp_path: Path) -> None:
+    path = tmp_path / "radar.sqlite3"
+    # Ledger created before Phase 3.2: full schema without service_domains_json.
+    legacy_schema = SCHEMA.replace(
+        "    service_domains_json TEXT NOT NULL DEFAULT '[]',\n", ""
+    )
+    connection = sqlite3.connect(path)
+    connection.executescript(legacy_schema)
+    connection.commit()
+    connection.close()
+    store = RadarStore(path)
+    store.initialize()
+    opportunity = Opportunity(
+        source="test",
+        category=OpportunityCategory.FREELANCE,
+        external_id="legacy",
+        title="Legacy ledger row",
+        url="https://example.com/legacy",
+    )
+    store.record_result(CollectionResult(source="test", opportunities=[opportunity]))
+    rows = store.list_opportunities()
+    assert rows[0]["service_domains_json"] == "[]"
 
 
 def test_store_hides_discarded_opportunities(tmp_path: Path) -> None:
