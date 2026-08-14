@@ -19,5 +19,11 @@ def test_accepts_small_explicit_bounty() -> None:
     assert first_compensation("Reward: $3 USDC on merge") == "$3 USDC"
 
 
+def test_zero_amount_is_never_pay() -> None:
+    assert first_compensation("Bounty: $0 on merge") is None
+    assert first_compensation("Reward: 0 USDC for the fix") is None
+    assert first_compensation("Budget $0; real reward $75") == "$75"
+
+
 def test_extracts_public_email() -> None:
     assert first_email("Contact jobs@example.com to apply") == "jobs@example.com"

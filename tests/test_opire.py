@@ -38,3 +38,16 @@ def test_resolve_reward_amount_uses_pending_price_when_consistent() -> None:
 
 def test_resolve_reward_amount_unknown_without_evidence() -> None:
     assert resolve_reward_amount({"title": "No amount anywhere"}) is None
+
+
+def test_resolve_reward_amount_zero_is_never_pay() -> None:
+    zero_pending = {
+        "title": "Zero bounty issue",
+        "pendingPrice": {"value": 0, "unit": "USD_CENT"},
+    }
+    assert resolve_reward_amount(zero_pending) is None
+    zero_title = {
+        "title": "Fix bug ($0)",
+        "pendingPrice": {"value": 0, "unit": "USD_CENT"},
+    }
+    assert resolve_reward_amount(zero_title) is None

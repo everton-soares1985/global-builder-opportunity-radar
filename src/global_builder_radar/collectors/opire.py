@@ -70,9 +70,9 @@ def resolve_reward_amount(reward: dict[str, Any]) -> str | None:
         pending = value / 100
     if title_amount:
         amount = float(title_amount.group(1).replace(",", ""))
-        if pending is None or abs(pending - amount) > 0.01:
+        if amount > 0 and (pending is None or abs(pending - amount) > 0.01):
             return f"USD {amount:,.2f}"
-    if pending is not None:
+    if pending is not None and pending > 0:
         return f"USD {pending:,.2f}"
     return None
 

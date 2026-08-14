@@ -8,8 +8,9 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 - Current phase: **Phase 3 — CLOSED** (2026-08-14). Former units 3C–3H are retired and live
   in the roadmap backlog.
 - Completed prerequisites: Phases 1, 2, and 3, including all independent review blockers.
-- Current work unit: **none** — Phase 3 is closed; the next roadmap phase (review workflow and
-  briefing) starts only with explicit user authorization.
+- Current work unit: **none** — Phase 3 is closed; a small report-hygiene fix was completed
+  after 3.2 (evidence below) and awaits commit authorization. The next roadmap phase (review
+  workflow and briefing) starts only with explicit user authorization.
 - Last completed units: **3A — Reddit source expansion** (2026-08-13), **3B — HN freelancer
   thread admission** (2026-08-14), **Phase 3.1 — consolidate essential sources** (2026-08-14,
   catalog frozen), and **Phase 3.2 — filter and prioritize** (2026-08-14); evidence below.
@@ -229,5 +230,37 @@ Remaining risks: keyword labels carry normal deterministic noise (e.g. video-edi
   pick up automation); the catalog stays frozen, so label coverage grows only with refreshed
   rows; Phase 4 (review workflow/briefing) is not started.
 Next work unit: none — Phase 3 is closed; await user direction for Phase 4.
+Commit/push status: pending user authorization.
+```
+
+## Report hygiene fix evidence (2026-08-14) — post-Phase-3 operational correction
+
+```text
+Trigger: user review of the real report found contaminated rows — a retired-source bounty,
+  closed GitHub issues shown as open opportunities, and a zero-bounty issue shown as $1,500 pay.
+Scope delivered (report-only, no new sources/architecture):
+  - Default report excludes rows from disabled/retired sources via enabled_sources filter
+    (rows stay in SQLite; audit override: report --include-disabled-sources).
+  - New read-only CLI command verify-github-issues checks every non-discarded GitHub issue
+    row against the public API (redirect-following): closed issues and dead references
+    (HTTP 404/410) become status='discarded'; open issues labeled zero-bounty lose all
+    compensation fields. Everything is preserved in SQLite.
+  - Zero amounts can never be extracted as pay: first_compensation skips values <= 0
+    (including token suffixes) and Opire resolve_reward_amount rejects zero title/pending
+    amounts.
+  - New module github_issues.py: pure URL mapping (issue links only) and state/label verdict;
+    offline-testable without network.
+Offline tests: 116 tests pass (pytest -q), ruff clean; new tests/test_github_issues.py plus
+  additions to test_extraction.py, test_opire.py, and test_storage.py (filter, discard,
+  clear_compensation, github_issue_rows).
+Live evidence: two supervised verify-github-issues runs hid 22 rows — 18 closed issues
+  (including qtop #433/#337, autokey #87, MisakaNet #932) and 4 dead references (404/410);
+  remaining 11 issue rows verified open. No open zero-bounty rows were found this run.
+Files changed: src/global_builder_radar/github_issues.py (new), cli.py, storage.py,
+  collectors/base.py, collectors/opire.py, tests/test_github_issues.py (new),
+  tests/test_extraction.py, tests/test_opire.py, tests/test_storage.py, CHANGELOG.md, this file.
+Remaining risks: issues can close between verifications — rerun verify-github-issues before
+  acting on old rows; closed-state evidence exists only at GitHub, not in stored payloads.
+Next work unit: none — await user assessment of the cleaned report before any Phase 4 decision.
 Commit/push status: pending user authorization.
 ```

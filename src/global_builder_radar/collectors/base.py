@@ -76,6 +76,9 @@ def first_compensation(text: str) -> str | None:
 
     for match in MONEY_PATTERN.finditer(text):
         value = match.group(0).strip().rstrip(".,;:")
+        # Zero-amount figures are never pay, even with a token suffix.
+        if _numeric_value(value) <= 0:
+            continue
         context = text[max(0, match.start() - 120) : min(len(text), match.end() + 120)]
         before = text[max(0, match.start() - 80) : match.start()]
         after = text[match.end() : min(len(text), match.end() + 40)]

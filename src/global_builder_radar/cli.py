@@ -10,10 +10,12 @@ from __future__ import annotations
 import asyncio
 import csv
 import json
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
 
+import httpx
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -25,6 +27,7 @@ from global_builder_radar.config import (
     load_profile_rules,
     load_radar_config,
 )
+from global_builder_radar.github_issues import github_issue_api_url, verdict_from_payload
 from global_builder_radar.logging_config import configure_logging
 from global_builder_radar.pipeline import run_collection
 from global_builder_radar.scoring import basic_quality, freshness_days
@@ -141,13 +144,27 @@ def report(
             help="Include legacy traditional-job records for audit purposes.",
         ),
     ] = False,
+    include_disabled_sources: Annotated[
+        bool,
+        typer.Option(
+            "--include-disabled-sources",
+            help="Include records from retired/disabled sources (audit only).",
+        ),
+    ] = False,
 ) -> None:
     """Display or export ranked opportunities."""
+    config = load_radar_config()
+    enabled = (
+        [source.id for source in config.sources if source.enabled]
+        if not include_disabled_sources
+        else None
+    )
     rows = _store().list_opportunities(
         limit=limit,
         min_score=min_score,
         categories=category,
         sources=source,
+        enabled_sources=enabled,
         paid_only=paid_only,
         with_contact=with_contact,
         include_traditional=include_traditional,
@@ -222,6 +239,77 @@ def report(
                 writer.writeheader()
                 writer.writerows(normalized)
     console.print(f"Exported {len(normalized)} opportunities to {output}")
+
+
+@app.command("verify-github-issues")
+def verify_github_issues() -> None:
+    """Check ledger GitHub issues and hide closed, zero-bounty, or dead ones.
+
+    Read-only toward GitHub. Closed and dead-reference rows become
+    status='discarded' and open zero-bounty rows lose their pay fields;
+    everything stays in SQLite.
+    """
+    configure_logging()
+    store = _store()
+    rows = store.github_issue_rows()
+    discarded = cleared = checked = errors = 0
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "global-builder-opportunity-radar",
+    }
+    github_token = os.environ.get("GITHUB_TOKEN")
+    if github_token:
+        headers["Authorization"] = f"Bearer {github_token}"
+    with httpx.Client(timeout=15, headers=headers, follow_redirects=True) as client:
+        for row in rows:
+            api_url = github_issue_api_url(row["url"])
+            if not api_url:
+                continue
+            try:
+                response = client.get(api_url)
+                response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code in {403, 429}:
+                    # Rate limit: stop the batch instead of repeating failures.
+                    message = "GitHub rate limit reached — batch stopped"
+                    reset = exc.response.headers.get("X-RateLimit-Reset")
+                    if reset and reset.isdigit():
+                        reset_at = datetime.fromtimestamp(int(reset), tz=UTC).astimezone()
+                        message += f"; limit resets at {reset_at:%Y-%m-%d %H:%M} local time"
+                    console.print(f"[yellow]{message}.[/yellow]")
+                    break
+                if exc.response.status_code in {404, 410}:
+                    # Repository or issue no longer exists: dead reference.
+                    store.discard(row["fingerprint"])
+                    discarded += 1
+                    console.print(
+                        f"[red]dead     [/red] {row['url']} (HTTP {exc.response.status_code})"
+                    )
+                else:
+                    errors += 1
+                    console.print(
+                        f"[yellow]skipped {row['url']} (HTTP {exc.response.status_code})[/yellow]"
+                    )
+                continue
+            except httpx.HTTPError as exc:
+                errors += 1
+                console.print(f"[yellow]skipped {row['url']} ({type(exc).__name__})[/yellow]")
+                continue
+            checked += 1
+            closed, zero_bounty = verdict_from_payload(response.json())
+            if closed:
+                store.discard(row["fingerprint"])
+                discarded += 1
+                console.print(f"[red]closed   [/red] {row['url']}")
+            elif zero_bounty:
+                store.clear_compensation(row["fingerprint"])
+                cleared += 1
+                console.print(f"[yellow]no pay  [/yellow] {row['url']}")
+    console.print(
+        f"Checked {checked}/{len(rows)} GitHub issues: "
+        f"{discarded} hidden (closed or dead), {cleared} pay cleared (zero-bounty), "
+        f"{errors} skipped on error."
+    )
 
 
 @app.command()

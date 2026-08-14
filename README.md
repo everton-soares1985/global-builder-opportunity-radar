@@ -60,9 +60,15 @@ py -3.12 -m venv .venv
 python -X utf8 -m pip install -e ".[dev]"
 python -X utf8 -m global_builder_radar sources
 python -X utf8 -m global_builder_radar collect
+python -X utf8 -m global_builder_radar verify-github-issues
 python -X utf8 -m global_builder_radar report --min-score 10
 python -X utf8 -m global_builder_radar report --paid-only --format detailed --limit 10
 ```
+
+Daily routine is `collect` → `verify-github-issues` → `report`. Verification hides closed or
+dead GitHub issues and strips pay from zero-bounty rows before you act on the list; set
+`GITHUB_TOKEN` (for example `$env:GITHUB_TOKEN = gh auth token`) to avoid the 60 requests/hour
+anonymous API limit.
 
 Optional Apify support:
 
@@ -79,6 +85,7 @@ Copy `.env.example` to `.env` only when optional credentials are required. Never
 | `sources` | Show configured sources and collector types. |
 | `init-db` | Initialize the local SQLite ledger. |
 | `collect` | Collect all enabled sources or selected source IDs. |
+| `verify-github-issues` | Hide closed/dead GitHub issues and strip zero-bounty pay (read-only). |
 | `report` | Rank and display/export opportunities. |
 | `health` | Show the last real result for every attempted source. |
 

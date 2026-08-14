@@ -17,6 +17,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | `models.py` | Source-agnostic opportunity, status, category, and source models. | Pydantic and standard library. |
 | `classification.py` | Deterministic opportunity-kind classifier: employment evidence first, occupation-aware keyword signals, source category fallback. | `models.py` only. |
 | `service_domains.py` | Deterministic seven-domain service-area classifier (programming, automation, scraping, AI, marketing, CRM, RevOps); unknown stays unknown. | Labels never touch kind, quarantine, or ranking. |
+| `github_issues.py` | Pure GitHub issue URL mapping and closed/zero-bounty verdict from public API payloads; used by the read-only `verify-github-issues` report-hygiene command. | No network in the pure layer; rows stay in SQLite. |
 | `extraction.py` | Structured evidence extraction (compensation with payment-context gate, deadline, technologies, effort, conservative Brazil eligibility). | `models.py` only. |
 | `config.py` | YAML/environment loading and typed configuration. | `models.py`. |
 | `config/sources.yaml` | Enabled sources and acquisition settings. | Collector registry identifiers. |
@@ -60,6 +61,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | `tests/test_hn_freelancer.py` | HN freelancer-thread admission: requester-side allowlist, worker-ad/chatter/flagged rejection, truthful zeros, stable IDs. |
 | `tests/test_scrapling_links.py` | Superteam-style listing parsing: card titles, dedup, pattern rejection, truthful empty page, max_items, prize-pool honesty. |
 | `tests/test_service_domains.py` | Seven-domain classification: per-domain signals, boundaries, unknown stays unknown, kind independence. |
+| `tests/test_github_issues.py` | GitHub issue URL mapping, zero-bounty label detection, closed/zero verdict from API payloads. |
 | `tests/test_opire.py` | Opire payload parsing. |
 
 New source parsers require a sanitized offline fixture under `tests/fixtures/` and focused parser

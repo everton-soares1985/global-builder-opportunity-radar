@@ -209,6 +209,7 @@ class RadarStore:
         min_score: float = 0,
         categories: list[str] | None = None,
         sources: list[str] | None = None,
+        enabled_sources: list[str] | None = None,
         paid_only: bool = False,
         with_contact: bool = False,
         include_traditional: bool = False,
@@ -225,6 +226,10 @@ class RadarStore:
             placeholders = ", ".join("?" for _ in sources)
             clauses.append(f"source IN ({placeholders})")
             parameters.extend(sources)
+        if enabled_sources is not None:
+            placeholders = ", ".join("?" for _ in enabled_sources) or "NULL"
+            clauses.append(f"source IN ({placeholders})")
+            parameters.extend(enabled_sources)
         if paid_only:
             clauses.append("compensation_text IS NOT NULL")
         if with_contact:
@@ -241,6 +246,43 @@ class RadarStore:
                     """,
                     parameters,
                 ).fetchall()
+            )
+
+    def github_issue_rows(self) -> list[sqlite3.Row]:
+        """Non-discarded rows whose URL points to a GitHub issue."""
+        with self.connect() as connection:
+            return list(
+                connection.execute(
+                    """
+                    SELECT fingerprint, url FROM opportunities
+                    WHERE status != 'discarded'
+                      AND url LIKE 'https://github.com/%/issues/%'
+                    """
+                ).fetchall()
+            )
+
+    def discard(self, fingerprint: str) -> None:
+        """Hide a row from reports while preserving it in the ledger."""
+        with self.connect() as connection:
+            connection.execute(
+                "UPDATE opportunities SET status = 'discarded' WHERE fingerprint = ?",
+                (fingerprint,),
+            )
+
+    def clear_compensation(self, fingerprint: str) -> None:
+        """Remove every pay field so the row can never appear as paid."""
+        with self.connect() as connection:
+            connection.execute(
+                """
+                UPDATE opportunities SET
+                    compensation_text = NULL,
+                    compensation_amount_min = NULL,
+                    compensation_amount_max = NULL,
+                    compensation_currency = NULL,
+                    compensation_unit = NULL
+                WHERE fingerprint = ?
+                """,
+                (fingerprint,),
             )
 
     def source_health(self) -> Iterable[sqlite3.Row]:

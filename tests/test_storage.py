@@ -115,6 +115,97 @@ def test_store_hides_discarded_opportunities(tmp_path: Path) -> None:
     assert store.list_opportunities() == []
 
 
+def test_enabled_sources_filter_hides_retired_rows(tmp_path: Path) -> None:
+    store = RadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    active = Opportunity(
+        source="active_source",
+        category=OpportunityCategory.BOUNTY,
+        external_id="active",
+        title="Active bounty",
+        url="https://example.com/active",
+    )
+    retired = Opportunity(
+        source="retired_source",
+        category=OpportunityCategory.BOUNTY,
+        external_id="retired",
+        title="Retired bounty",
+        url="https://example.com/retired",
+    )
+    store.record_result(CollectionResult(source="mixed", opportunities=[active, retired]))
+
+    rows = store.list_opportunities(enabled_sources=["active_source"])
+    assert [row["title"] for row in rows] == ["Active bounty"]
+    # The retired row stays in the ledger; the filter only hides it.
+    assert len(store.list_opportunities()) == 2
+    assert store.list_opportunities(enabled_sources=[]) == []
+
+
+def test_discard_hides_row_but_preserves_it(tmp_path: Path) -> None:
+    store = RadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    opportunity = Opportunity(
+        source="test",
+        category=OpportunityCategory.BOUNTY,
+        external_id="closed-issue",
+        title="Closed GitHub issue",
+        url="https://github.com/owner/repo/issues/1",
+    )
+    store.record_result(CollectionResult(source="test", opportunities=[opportunity]))
+
+    store.discard(opportunity.fingerprint)
+
+    assert store.list_opportunities() == []
+    with store.connect() as connection:
+        row = connection.execute(
+            "SELECT status FROM opportunities WHERE fingerprint = ?",
+            (opportunity.fingerprint,),
+        ).fetchone()
+    assert row["status"] == "discarded"
+
+
+def test_clear_compensation_removes_every_pay_field(tmp_path: Path) -> None:
+    store = RadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    opportunity = Opportunity(
+        source="test",
+        category=OpportunityCategory.BOUNTY,
+        external_id="zero-bounty",
+        title="Zero bounty issue",
+        url="https://github.com/owner/repo/issues/2",
+        compensation_text="USD 1,500.00",
+    )
+    store.record_result(CollectionResult(source="test", opportunities=[opportunity]))
+
+    store.clear_compensation(opportunity.fingerprint)
+
+    rows = store.list_opportunities(paid_only=True)
+    assert rows == []
+    assert store.list_opportunities()[0]["compensation_text"] is None
+
+
+def test_github_issue_rows_selects_only_issue_links(tmp_path: Path) -> None:
+    store = RadarStore(tmp_path / "radar.sqlite3")
+    store.initialize()
+    issue = Opportunity(
+        source="test",
+        category=OpportunityCategory.BOUNTY,
+        external_id="issue",
+        title="Issue link",
+        url="https://github.com/owner/repo/issues/3",
+    )
+    other = Opportunity(
+        source="test",
+        category=OpportunityCategory.FREELANCE,
+        external_id="other",
+        title="Reddit link",
+        url="https://reddit.com/r/forhire/comments/1",
+    )
+    store.record_result(CollectionResult(source="test", opportunities=[issue, other]))
+    rows = store.github_issue_rows()
+    assert [row["url"] for row in rows] == ["https://github.com/owner/repo/issues/3"]
+
+
 def test_store_hides_traditional_jobs_by_default(tmp_path: Path) -> None:
     store = RadarStore(tmp_path / "radar.sqlite3")
     store.initialize()

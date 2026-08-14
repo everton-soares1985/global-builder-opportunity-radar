@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Report hygiene fix (2026-08-14): the default report now excludes rows from retired/disabled
+  sources (audit override: `--include-disabled-sources`), and a new read-only
+  `verify-github-issues` command hides closed or dead-reference GitHub issues (status
+  `discarded`, preserved in SQLite) and strips pay from open zero-bounty issues. Zero amounts
+  can never be extracted as compensation. First run hid 22 contaminated rows; reports regenerated.
 - Autonomous continuation now uses `docs/current-work.md`, with an ordered Phase 3 queue, a bounded
   Reddit source-admission unit, marketing-automation scope, and multi-window isolation rules.
 - The Qwen handoff now starts from Phase 3A instead of the already completed Phase 1.
