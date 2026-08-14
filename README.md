@@ -47,7 +47,8 @@ flowchart LR
 
 See the [product mission](docs/mission.md), [architecture](docs/architecture.md),
 [module map](docs/module-map.md), [source admission standard](docs/source-admission.md), and
-[delivery roadmap](docs/roadmap.md).
+[delivery roadmap](docs/roadmap.md). Coding agents continue from the bounded contract in
+[current autonomous work](docs/current-work.md).
 
 ## Quick start
 

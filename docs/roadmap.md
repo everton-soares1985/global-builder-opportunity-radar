@@ -46,23 +46,31 @@ the new fields; extraction tests cover valid, unknown, and misleading examples.
 
 ## Phase 3 — source quality and source expansion
 
-- [ ] Replace or retire the indirect Algora GitHub search.
-- [ ] Verify Superteam extraction with offline fixtures.
+- [ ] **3A:** Admit Reddit `r/jobbit` and `r/slavelabour` with requester-side filtering, offline RSS
+  fixtures, truthful health behavior, and supervised live evidence.
+- [ ] **3B:** Admit the HN monthly freelancer/seeking-freelancer thread with offline fixtures and
+  source-specific semantics instead of treating it as the broad Who Is Hiring feed.
+- [ ] **3C:** Replace or retire the indirect Algora GitHub search.
+- [ ] **3D:** Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
+- [ ] **3E:** Add a separate deterministic `service_domains` classifier without changing
+  opportunity-kind semantics.
+- [ ] **3F:** Research and admit project sources for marketing automation, CRM, lead generation,
+  Sales Ops, RevOps, content automation, reporting, and customer-support automation.
+- [ ] **3G:** Add source confidence, freshness, and degradation metrics.
+- [ ] **3H:** Implement and admit the remaining researched candidates after the earlier admission
+  patterns are stable.
+
+Completed research prerequisites:
+
 - [x] Research candidate sources for grants and paid fellowships (catalog in `docs/sources.md`).
 - [x] Research candidate prize-bearing hackathons (catalog in `docs/sources.md`).
 - [x] Research candidate freelance/project sources with public opportunity evidence (catalog in
       `docs/sources.md`).
-- [ ] Implement and admit the researched candidates, starting with config-only sources.
-- [ ] Add source confidence, freshness, and degradation metrics.
-- [ ] Research and admit project sources for marketing automation, CRM, lead generation, Sales
-  Ops, RevOps, content automation, reporting, and customer-support automation.
-- [ ] Add a separate deterministic `service_domains` classifier without changing opportunity-kind
-  semantics.
 
 Candidate sources must pass `docs/source-admission.md`; quantity alone is not an acceptance
-criterion. Recommended implementation order: config-only additions (Reddit jobbit/slavelabour, HN
-freelancer thread), Algora GraphQL replacement, hackathon sources (Devpost/Unstop/MLH), Apify
-freelance sources (Upwork, Freelancer.com), then curated programs and ambassadors.
+criterion. The authoritative unit order and current execution contract live in
+`docs/current-work.md`. A candidate described as config-only must still be verified against its
+current public format before admission.
 
 Marketing and business-operations discovery must target paid projects or contracts where
 automation is useful. Do not reintroduce permanent marketing or sales employment through these

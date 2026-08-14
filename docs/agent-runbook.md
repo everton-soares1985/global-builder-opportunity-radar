@@ -15,6 +15,9 @@ python -X utf8 -m ruff check .
 Then read the mandatory documents listed in `AGENTS.md` and inspect only the modules related to the
 selected roadmap phase.
 
+`docs/current-work.md` identifies the single work unit to execute. Do not select a later unit merely
+because it looks easier.
+
 ## Work-unit template
 
 Before coding, write this short internal contract:
@@ -30,6 +33,9 @@ Explicit non-goals:
 ```
 
 Keep one work unit small enough to review as a coherent diff.
+
+If another coding window is active, use a separate Git worktree and branch. Two writable agents
+must never share the same working directory or edit the same work unit concurrently.
 
 ## During implementation
 

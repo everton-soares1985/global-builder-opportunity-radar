@@ -32,7 +32,8 @@ Before editing code in a new session, read these files in order:
 5. `docs/source-admission.md`
 6. `docs/roadmap.md`
 7. `docs/review-findings.md`
-8. the documentation and tests related to the module being changed
+8. `docs/current-work.md`
+9. the documentation and tests related to the module being changed
 
 Do not infer current behavior from chat history. The repository is the source of truth.
 
@@ -41,7 +42,7 @@ Do not infer current behavior from chat history. The repository is the source of
 1. Inspect `git status`, the current branch, and the latest test state.
 2. Resolve every open blocking item in `docs/review-findings.md` before selecting new roadmap work.
 3. Select the first incomplete roadmap item whose prerequisites are complete.
-4. Write a bounded implementation plan with affected files and acceptance criteria.
+4. Read `docs/current-work.md` and use its current work unit as the bounded implementation plan.
 5. Implement only that roadmap item; do not redesign unrelated modules.
 6. Add or update deterministic offline tests.
 7. Run the validation commands defined below.
@@ -141,6 +142,7 @@ Never weaken, skip, or delete a failing test merely to make a gate green.
 - `docs/roadmap.md`: ordered delivery plan and acceptance criteria.
 - `docs/agent-runbook.md`: session and handoff procedure.
 - `docs/review-findings.md`: independent audit blockers that take precedence over new features.
+- `docs/current-work.md`: current autonomous work unit, ordered queue, and completion evidence.
 
 When IDE Wiki/Knowledge becomes available, the agent must create cards for Mission, Architecture,
 Module Map, Source Admission, Current Sources, and Roadmap. Each card must link to its canonical

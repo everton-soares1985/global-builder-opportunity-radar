@@ -22,11 +22,11 @@ content, reporting, and customer-support projects where automation is a delivera
 Keep opportunity kind separate from service domain; do not admit permanent marketing or sales
 employment.
 
-Use docs/roadmap.md as the execution queue. Select the first incomplete item whose prerequisites
-are complete, state a bounded plan and acceptance criteria, implement it, test it, update the
-canonical documentation, and report the result using docs/agent-runbook.md. Continue phase by
-phase when all gates are green. Do not rewrite working architecture or start downstream Spark,
-Gmail, Hermes, VPS, dashboard, or outreach work before their roadmap prerequisites.
+Use docs/current-work.md as the operational queue and docs/roadmap.md as the phase-level plan.
+Implement only the work unit marked NEXT, test it, update the canonical documentation, and report
+the result using docs/agent-runbook.md. Continue one work unit at a time when all gates are green.
+Do not rewrite working architecture or start downstream Spark, Gmail, Hermes, VPS, dashboard, or
+outreach work before their roadmap prerequisites.
 
 Before new roadmap work, read docs/review-findings.md and resolve every open blocking finding with
 offline regression tests. Independent review blockers override previously checked roadmap items.
@@ -41,6 +41,8 @@ explicit authorization.
 
 ## Expected first action
 
-The first incomplete roadmap work is Phase 1: implement and test deterministic opportunity-kind
-classification, then quarantine ordinary employment from default reports while retaining valid
-contracts and projects from mixed sources.
+Phases 1 and 2 are complete. The next work is **Phase 3A** in `docs/current-work.md`: inspect and
+admit the Reddit `r/jobbit` and `r/slavelabour` project feeds safely, starting with sanitized offline
+RSS fixtures. Do not assume they are config-only until their current title/flair conventions are
+verified. Stop after 3A is complete and report evidence before starting 3B unless the user has
+explicitly requested continued autonomous execution.

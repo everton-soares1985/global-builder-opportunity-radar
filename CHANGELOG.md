@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Autonomous continuation now uses `docs/current-work.md`, with an ordered Phase 3 queue, a bounded
+  Reddit source-admission unit, marketing-automation scope, and multi-window isolation rules.
+- The Qwen handoff now starts from Phase 3A instead of the already completed Phase 1.
 - Public setup and contributor instructions now use portable repository paths instead of
   developer-specific absolute Windows paths.
 
