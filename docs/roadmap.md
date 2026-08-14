@@ -51,8 +51,11 @@ the new fields; extraction tests cover valid, unknown, and misleading examples.
   Completed 2026-08-13: r/slavelabour verified and enabled (requester-side `[TASK]` allowlist);
   r/jobbit rejected after live smoke (feed dominated by yearly salaried reposts); evidence in
   `docs/sources.md`; parser tests in `tests/test_reddit_rss.py`.
-- [ ] **3B:** Admit the HN monthly freelancer/seeking-freelancer thread with offline fixtures and
+- [x] **3B:** Admit the HN monthly freelancer/seeking-freelancer thread with offline fixtures and
   source-specific semantics instead of treating it as the broad Who Is Hiring feed.
+  Completed 2026-08-14: dedicated `hackernews_freelancer` collector keeps only requester-side
+  `SEEKING FREELANCER` comments; fixtures and tests in `tests/test_hn_freelancer.py`; evidence
+  in `docs/sources.md`.
 - [ ] **3C:** Replace or retire the indirect Algora GitHub search.
 - [ ] **3D:** Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
 - [ ] **3E:** Add a separate deterministic `service_domains` classifier without changing

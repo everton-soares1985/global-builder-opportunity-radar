@@ -47,6 +47,20 @@ sources:
     options:
       thread_query: "Ask HN: Who is hiring?"
 
+  - id: hackernews_freelancer
+    # Verified (Phase 3B): requester-side SEEKING FREELANCER comments only;
+    # live smoke 2026-08-14 passed docs/source-admission.md (see docs/sources.md).
+    enabled: true
+    collector: hackernews_freelancer
+    category: freelance
+    url: https://hn.algolia.com/api/v1
+    max_items: 50
+    timeout_seconds: 30
+    options:
+      thread_query: "Freelancer? Seeking freelancer?"
+      allowed_comment_prefixes:
+        - "SEEKING FREELANCER"
+
   - id: algora_bounties
     enabled: true
     collector: github_bounty_search

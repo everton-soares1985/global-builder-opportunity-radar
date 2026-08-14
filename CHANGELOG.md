@@ -15,6 +15,11 @@ All notable changes to this project will be documented in this file.
   requester-side `[TASK]` title allowlist; Reddit r/jobbit stays disabled after the supervised
   live smoke showed its `[HIRING]` feed is dominated by yearly salaried job-board reposts. Its
   smoke rows remain in the ledger with status `discarded` for audit.
+- Phase 3B admission decision (2026-08-14): the HN monthly Freelancer/Seeking-freelancer thread
+  is verified and enabled through the dedicated `hackernews_freelancer` collector; the broad
+  Who-is-Hiring collector stays disabled. Worker ads (`SEEKING WORK`), chatter, and flagged
+  comments are rejected before persistence; a month without requester posts reports a truthful
+  zero instead of a failure.
 
 ### Added
 
@@ -23,6 +28,10 @@ All notable changes to this project will be documented in this file.
 - Sanitized offline RSS fixtures for r/jobbit and r/slavelabour covering accepted and rejected
   title conventions, plus malformed-XML and HTML-block-page bodies; offline parser tests in
   `tests/test_reddit_rss.py`.
+- `hackernews_freelancer` collector for the monthly "Freelancer? Seeking freelancer?" thread
+  with a requester-side comment allowlist (`allowed_comment_prefixes`), sanitized thread fixture
+  `tests/fixtures/hn_freelancer_thread_sample.json`, and offline parser tests in
+  `tests/test_hn_freelancer.py`.
 
 - Structured evidence extraction (`extraction.py`): compensation amount/range/currency/unit,
   explicit deadlines with source evidence, technology list, effort evidence, and Brazil

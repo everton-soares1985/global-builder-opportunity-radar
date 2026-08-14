@@ -1,0 +1,59 @@
+{
+  "id": 48358236,
+  "created_at": "2026-06-01T15:34:02.000Z",
+  "title": "Ask HN: Freelancer? Seeking freelancer? (June 2026)",
+  "author": "whoishiring",
+  "type": "story",
+  "children": [
+    {
+      "id": 48361270,
+      "created_at": "2026-06-01T18:12:00.000Z",
+      "author": "example_requester",
+      "text": "SEEKING FREELANCER | Remote (US+EU only)<p>Stack: Vue3, Ruby+Sinatra, Postgres.<p>We need a contractor to finish an MVP in the energy sector. Budget $5,000 fixed, 4-week engagement. Contact projects@example.com",
+      "children": [
+        {
+          "id": 48361500,
+          "created_at": "2026-06-01T19:00:00.000Z",
+          "author": "example_replier",
+          "text": "Interested, sent you an email.",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 48362000,
+      "created_at": "2026-06-02T09:30:00.000Z",
+      "author": "example_requester_two",
+      "text": "Seeking freelancer for ongoing data-pipeline maintenance. Rate $80/hr, fully remote, long-term contract. Reply through HN.",
+      "children": []
+    },
+    {
+      "id": 48363000,
+      "created_at": "2026-06-02T10:00:00.000Z",
+      "author": "example_worker",
+      "text": "SEEKING WORK | Backend engineer | Remote<p>I have 10 years of experience with Go and Postgres. Email me at worker@example.com",
+      "children": []
+    },
+    {
+      "id": 48364000,
+      "created_at": "2026-06-02T11:00:00.000Z",
+      "author": "example_chatter",
+      "text": "Does anyone know why this thread is posted a day late this month?",
+      "children": []
+    },
+    {
+      "id": 48365000,
+      "created_at": "2026-06-02T12:00:00.000Z",
+      "author": "example_flagged",
+      "text": "[flagged]",
+      "children": []
+    },
+    {
+      "id": 48366000,
+      "created_at": "2026-06-02T13:00:00.000Z",
+      "author": "example_deleted",
+      "text": null,
+      "children": []
+    }
+  ]
+}

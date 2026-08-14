@@ -6,6 +6,7 @@
 |---|---|---|---|---|
 | Reddit r/forhire | Freelance | Public RSS | Verified | Keep only `[Hiring]`; posts may expose email or Reddit DM. |
 | Reddit r/slavelabour | Freelance | Public RSS | Verified | Admitted 2026-08-13 (unit 3A). Keep only requester-side `[TASK]` posts via `allowed_title_prefixes`; `[OFFER]` worker ads and mod posts are rejected before persistence. Live smoke: 25 parsed / 9 accepted, all paid task requests; stable `t3_` IDs deduplicate across runs. |
+| HN monthly Freelancer/Seeking-freelancer thread | Freelance/contract | Algolia API | Verified | Admitted 2026-08-14 (unit 3B). Newest monthly thread only; top-level `SEEKING FREELANCER` comments become opportunities, `SEEKING WORK` worker ads, chatter, and flagged comments are rejected. Live smoke: August thread truthful zero (15 parsed / 0 accepted); June thread cross-check accepted the single real requester post of 31 comments. |
 | Hacker News Who is Hiring | Mixed jobs/contracts | Algolia API | Degraded/disabled | Acquisition works, but ordinary jobs cannot yet be separated reliably from contracts and projects. |
 | Algora-related GitHub signals | Open-source bounties | GitHub search spike | Experimental | Not an official Algora feed; keyword stuffing is rejected; replacement by the official Algora API is planned. |
 | Opire | Open-source bounties | Scrapling + public Next.js data | Verified | Parses the server-provided `initialRewards` payload from `/home`. |
@@ -24,7 +25,6 @@ Researched 2026-08. Each candidate remains `candidate` until it passes
 
 | Candidate | Category | Planned method | Research notes |
 |---|---|---|---|
-| HN "Ask HN: Freelancer? Seeking freelancer?" | freelance/contract | Algolia API (existing collector) | Monthly thread; config-only via `thread_query`. |
 | Algora official | bounty, contract | GraphQL API (`api.algora.io`) | Replaces the GitHub search spike; official bounties and contract work with values and repos. |
 | Dework | bounty (web3) | Scrapling or internal JSON at `app.dework.xyz/bounties` | Investigate a Next.js-style payload as with Opire. |
 | DoraHacks | bounty, grant, hackathon | Scrapling | Covers three categories in one platform. |

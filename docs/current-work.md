@@ -7,8 +7,9 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 
 - Current phase: **Phase 3 — source quality and expansion**.
 - Completed prerequisites: Phases 1 and 2, including all independent review blockers.
-- Current work unit: **3B — HN monthly freelancer thread admission**.
-- Last completed unit: **3A — Reddit source expansion** (2026-08-13; evidence below).
+- Current work unit: **3C — replace or retire the indirect Algora GitHub search**.
+- Last completed units: **3A — Reddit source expansion** (2026-08-13) and **3B — HN freelancer
+  thread admission** (2026-08-14); evidence below.
 - Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
   OmniRoute, and VPS scheduling.
 
@@ -49,8 +50,8 @@ Explicit non-goals: HN, Algora, Superteam, service-domain classification, AI, da
 | Unit | Scope | Prerequisite | State |
 |---|---|---|---|
 | 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **Complete** (2026-08-13) |
-| 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **NEXT** |
-| 3C | Replace or retire indirect Algora GitHub search using official evidence | None beyond Phase 2 | Pending |
+| 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **Complete** (2026-08-14) |
+| 3C | Replace or retire indirect Algora GitHub search using official evidence | None beyond Phase 2 | **NEXT** |
 | 3D | Superteam fixture, type mapping, and reliable acquisition path | None beyond Phase 2 | Pending |
 | 3E | Deterministic `service_domains` classification and persistence/export | Stable opportunity kind | Pending |
 | 3F | Research and admit paid marketing/CRM/RevOps/support automation projects | 3E | Pending |
@@ -122,4 +123,32 @@ Remaining risks: Reddit intermittently rate-limits (HTTP 429) or serves HTML blo
   gate before any contact.
 Next work unit: 3B — HN monthly freelancer/seeking-freelancer thread.
 Commit/push status: not committed (no user authorization).
+```
+
+## Unit 3B completion evidence (2026-08-14)
+
+```text
+Work unit completed: 3B — HN monthly freelancer/seeking-freelancer thread admission.
+Accepted/rejected source evidence:
+  - Thread convention confirmed live: worker ads use the SEEKING WORK prefix; requester posts
+    use SEEKING FREELANCER. The collector keeps only top-level SEEKING FREELANCER comments.
+  - Live smoke (August 2026 thread, id 49157021): parsed=15 accepted=0 — truthful zero, the
+    month currently contains only worker ads; health distinguishes this from a failure.
+  - Cross-check (June 2026 thread, id 48358236): parsed=31 accepted=1; the single real
+    SEEKING FREELANCER post was accepted with correct title/URL/provenance, all 28 SEEKING WORK
+    ads, chatter, and flagged comments rejected.
+Offline tests: 87 tests pass (pytest -q), ruff clean; new tests/test_hn_freelancer.py covers
+  requester acceptance, worker-ad/chatter/flagged/empty rejection, nested-reply exclusion,
+  truthful zeros, and stable IDs over a sanitized thread fixture.
+Live smoke result: read-only Algolia API calls only; failures are isolated at the collector
+  boundary and reported truthfully.
+Files changed: src/global_builder_radar/collectors/hackernews.py, registry.py,
+  config/sources.yaml, tests/test_hn_freelancer.py,
+  tests/fixtures/hn_freelancer_thread_sample.json.
+Documentation updated: docs/sources.md, docs/roadmap.md, docs/module-map.md, CHANGELOG.md,
+  this file.
+Remaining risks: requester posts are sparse (roughly 0-2 per monthly thread), so most runs
+  report truthful zeros; the broad Who-is-Hiring collector remains disabled and degraded.
+Next work unit: 3C — replace or retire the indirect Algora GitHub search.
+Commit/push status: see git history (separate commit from unit 3A).
 ```
