@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Global Builder Opportunity Radar</title>
+  <desc id="desc">A dark radar grid connecting public sources to ranked opportunities.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#102a43"/>
+    </linearGradient>
+    <radialGradient id="pulse">
+      <stop offset="0" stop-color="#4ade80" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#4ade80" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <circle cx="170" cy="150" r="125" fill="url(#pulse)"/>
+  <g transform="translate(170 150)" fill="none" stroke="#4ade80" stroke-opacity="0.5">
+    <circle r="35"/><circle r="70"/><circle r="105"/>
+    <path d="M-115 0H115M0-115V115M-81-81L81 81M81-81L-81 81"/>
+    <path d="M0 0L86-52" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g fill="#4ade80">
+    <circle cx="245" cy="105" r="7"/><circle cx="130" cy="215" r="5"/><circle cx="92" cy="120" r="4"/>
+  </g>
+  <text x="340" y="130" fill="#f8fafc" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="600">Global Builder</text>
+  <text x="340" y="184" fill="#4ade80" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="600">Opportunity Radar</text>
+  <text x="342" y="226" fill="#a8b8c8" font-family="Segoe UI, Arial, sans-serif" font-size="20">Freelance · Bounties · Grants · Direct opportunities</text>
+</svg>

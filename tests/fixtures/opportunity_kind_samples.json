@@ -1,0 +1,90 @@
+[
+  {
+    "name": "traditional job in mixed source",
+    "source_category": "mixed",
+    "title": "Senior Backend Engineer (Full-time)",
+    "description": "We are hiring a full-time senior engineer. Competitive salary, benefits package, 401k, visa sponsorship available.",
+    "tags": [],
+    "expected": "traditional_job"
+  },
+  {
+    "name": "contract survives mixed source",
+    "source_category": "mixed",
+    "title": "Contract Python developer for data pipeline",
+    "description": "Seeking a contractor for a fixed-term, project-based engagement. 6 months, remote.",
+    "tags": [],
+    "expected": "contract"
+  },
+  {
+    "name": "full-time contract stays contract",
+    "source_category": "mixed",
+    "title": "Full-time contract developer for 12-month engagement",
+    "description": "Contract work on a data platform. Remote friendly.",
+    "tags": [],
+    "expected": "contract"
+  },
+  {
+    "name": "freelance reddit post",
+    "source_category": "freelance",
+    "title": "[Hiring] Build a web scraper for e-commerce data",
+    "description": "Fixed price project, Python preferred. Email to apply.",
+    "tags": [],
+    "expected": "freelance"
+  },
+  {
+    "name": "open source bounty",
+    "source_category": "bounty",
+    "title": "Fix memory leak in parser",
+    "description": "$500 bounty on this issue. Payment released on merge.",
+    "tags": [],
+    "expected": "bounty"
+  },
+  {
+    "name": "maintainer grant",
+    "source_category": "mixed",
+    "title": "Open-source maintainer funding round",
+    "description": "Grant of $2,000 per month stipend for maintainers.",
+    "tags": [],
+    "expected": "grant"
+  },
+  {
+    "name": "prize hackathon",
+    "source_category": "mixed",
+    "title": "AI Agents Hackathon",
+    "description": "Online hackathon with a $10,000 prize pool.",
+    "tags": [],
+    "expected": "hackathon"
+  },
+  {
+    "name": "paid ambassador program",
+    "source_category": "mixed",
+    "title": "Developer Ambassador Program",
+    "description": "Paid ambassador program with monthly compensation.",
+    "tags": [],
+    "expected": "paid_program"
+  },
+  {
+    "name": "ambiguous text keeps source category",
+    "source_category": "freelance",
+    "title": "Community manager wanted",
+    "description": "Reach out if interested.",
+    "tags": [],
+    "expected": "freelance"
+  },
+  {
+    "name": "ambiguous mixed stays mixed",
+    "source_category": "mixed",
+    "title": "Opportunity of unclear kind",
+    "description": "Details in the thread.",
+    "tags": [],
+    "expected": "mixed"
+  },
+  {
+    "name": "legacy direct job becomes traditional",
+    "source_category": "direct_job",
+    "title": "Legacy imported job listing",
+    "description": "",
+    "tags": [],
+    "expected": "traditional_job"
+  }
+]

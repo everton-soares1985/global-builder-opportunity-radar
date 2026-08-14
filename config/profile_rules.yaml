@@ -1,0 +1,76 @@
+include_keywords:
+  python: 10
+  automation: 10
+  browser automation: 10
+  scraping: 10
+  scraper: 10
+  web scraping: 10
+  playwright: 7
+  scrapling: 8
+  apify: 7
+  api: 6
+  integration: 6
+  ai agent: 9
+  ai agents: 9
+  agentic: 7
+  llm: 6
+  workflow: 6
+  data extraction: 9
+  data pipeline: 7
+  open source: 4
+  bounty: 5
+  freelance: 6
+  remote: 3
+  marketing automation: 10
+  crm automation: 10
+  email automation: 9
+  sales automation: 9
+  lead generation: 8
+  lead enrichment: 9
+  marketing ops: 8
+  sales ops: 8
+  revops: 8
+  content automation: 8
+  reporting dashboard: 7
+  customer support automation: 8
+  n8n: 9
+  make.com: 7
+  zapier: 7
+  hubspot: 7
+
+exclude_keywords:
+  unpaid: -20
+  volunteer only: -20
+  onsite only: -12
+  us citizens only: -12
+  security exploit: -8
+  senior only: -5
+  principal engineer: -7
+  onsite: -5
+  commission only: -20
+  commission-only: -20
+
+category_weights:
+  freelance: 10
+  contract: 9
+  bounty: 10
+  grant: 8
+  hackathon: 7
+  paid_program: 6
+  mixed: 5
+  direct_job: -20
+  traditional_job: -20
+
+source_weights:
+  opire_bounties: 4
+  superteam_earn: 4
+  algora_bounties: 3
+  reddit_forhire: 2
+  hackernews_hiring: -10
+
+bonuses:
+  email_contact: 8
+  direct_contact: 4
+  compensation_visible: 8
+  remote: 4
+  deadline_visible: 2

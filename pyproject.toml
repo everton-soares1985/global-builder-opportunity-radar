@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "global-builder-radar"
+version = "0.1.0"
+description = "A source-driven radar for paid automation projects, freelance work, grants, hackathons, programs, and bounties."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Everton De Oliveira Soares" }]
+dependencies = [
+  "feedparser>=6.0.11,<7",
+  "httpx>=0.28,<1",
+  "pydantic>=2.11,<3",
+  "python-dateutil>=2.9,<3",
+  "PyYAML>=6.0.2,<7",
+  "rich>=14,<15",
+  # 0.4.8 currently requests a Chrome 147 fingerprint that BrowserForge cannot
+  # generate on Windows. 0.4.1 is the newest verified Windows-compatible pin.
+  "scrapling[fetchers]==0.4.1",
+  "typer>=0.16,<1",
+]
+
+[project.optional-dependencies]
+apify = ["apify-client>=2.0,<3"]
+dev = [
+  "pytest>=8.4,<9",
+  "pytest-cov>=6.2,<7",
+  "respx>=0.22,<1",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+builder-radar = "global_builder_radar.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/global_builder_radar"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

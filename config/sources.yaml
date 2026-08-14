@@ -1,0 +1,56 @@
+sources:
+  - id: reddit_forhire
+    enabled: true
+    collector: reddit_rss
+    category: freelance
+    url: https://www.reddit.com/r/forhire/new/.rss
+    max_items: 50
+    timeout_seconds: 30
+    options:
+      required_flair_prefix: "[Hiring]"
+
+  - id: hackernews_hiring
+    # Disabled until the collector can retain contracts/projects while excluding ordinary jobs.
+    enabled: false
+    collector: hackernews_hiring
+    category: direct_job
+    url: https://hn.algolia.com/api/v1
+    max_items: 100
+    timeout_seconds: 30
+    options:
+      thread_query: "Ask HN: Who is hiring?"
+
+  - id: algora_bounties
+    enabled: true
+    collector: github_bounty_search
+    category: bounty
+    url: https://api.github.com/search/issues
+    max_items: 50
+    timeout_seconds: 30
+    options:
+      query: 'is:issue is:open label:bounty algora in:title,body'
+      platform_marker: algora
+      max_signal_repetitions: 25
+
+  - id: opire_bounties
+    enabled: true
+    collector: opire_next_data
+    category: bounty
+    url: https://app.opire.dev/home
+    max_items: 50
+    timeout_seconds: 45
+    options:
+      fetcher: dynamic
+
+  - id: superteam_earn
+    enabled: true
+    collector: scrapling_links
+    category: mixed
+    url: https://superteam.fun/earn/all?tab=bounties
+    max_items: 50
+    timeout_seconds: 45
+    options:
+      fetcher: dynamic
+      link_pattern: "/earn/listing/"
+      title_selector: "p.line-clamp-1::text"
+      detail_hint: "bounty grant project job"
