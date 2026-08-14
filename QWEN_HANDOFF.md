@@ -22,6 +22,13 @@ content, reporting, and customer-support projects where automation is a delivera
 Keep opportunity kind separate from service domain; do not admit permanent marketing or sales
 employment.
 
+Phase 3 is locked to two blocks: 3.1 consolidates essential sources (replace or retire the
+indirect Algora search, verify Superteam, then freeze the catalog) and 3.2 filters and
+prioritizes (simple deterministic `service_domains` classifier covering programming, automation,
+scraping, AI, marketing, CRM, and RevOps, plus only basic quality/freshness signals, then close
+Phase 3). Do not resurrect retired units 3C–3H or backlog items (additional sources, hackathons,
+Apify, fellowships, sophisticated metrics) without explicit approval.
+
 Use docs/current-work.md as the operational queue and docs/roadmap.md as the phase-level plan.
 Implement only the work unit marked NEXT, test it, update the canonical documentation, and report
 the result using docs/agent-runbook.md. Continue one work unit at a time when all gates are green.
@@ -41,8 +48,9 @@ explicit authorization.
 
 ## Expected first action
 
-Phases 1 and 2 are complete. The next work is **Phase 3A** in `docs/current-work.md`: inspect and
-admit the Reddit `r/jobbit` and `r/slavelabour` project feeds safely, starting with sanitized offline
-RSS fixtures. Do not assume they are config-only until their current title/flair conventions are
-verified. Stop after 3A is complete and report evidence before starting 3B unless the user has
-explicitly requested continued autonomous execution.
+Phases 1, 2, and Phase 3 units 3A (Reddit admission) and 3B (HN freelancer thread) are complete.
+The next work is **Phase 3.1** in `docs/current-work.md`: replace or retire the indirect Algora
+GitHub search using official evidence, then verify Superteam with offline fixtures and explicit
+opportunity-type mapping, then freeze the source catalog. Stop after 3.1 is complete and report
+evidence before starting 3.2 unless the user has explicitly requested continued autonomous
+execution.

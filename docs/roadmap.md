@@ -44,27 +44,42 @@ contract opportunities from mixed sources remain discoverable; classification is
 Acceptance criteria: no guessed values; schema migration is backward-compatible; exports contain
 the new fields; extraction tests cover valid, unknown, and misleading examples.
 
-## Phase 3 — source quality and source expansion
+## Phase 3 — source consolidation, filtering, and prioritization
 
-- [x] **3A:** Admit Reddit `r/jobbit` and `r/slavelabour` with requester-side filtering, offline RSS
-  fixtures, truthful health behavior, and supervised live evidence.
+Phase 3 is limited to exactly two blocks. Former units 3C–3H were retired as independent units;
+additional sources, hackathons, Apify acquisition, fellowships, and sophisticated metrics live in
+the Phase 3 backlog below and must not be resurrected without explicit user approval.
+
+### Phase 3.1 — consolidate essential sources
+
+- [x] Admit Reddit project sources with requester-side filtering (unit 3A).
   Completed 2026-08-13: r/slavelabour verified and enabled (requester-side `[TASK]` allowlist);
   r/jobbit rejected after live smoke (feed dominated by yearly salaried reposts); evidence in
   `docs/sources.md`; parser tests in `tests/test_reddit_rss.py`.
-- [x] **3B:** Admit the HN monthly freelancer/seeking-freelancer thread with offline fixtures and
-  source-specific semantics instead of treating it as the broad Who Is Hiring feed.
+- [x] Admit the HN monthly freelancer/seeking-freelancer thread (unit 3B).
   Completed 2026-08-14: dedicated `hackernews_freelancer` collector keeps only requester-side
   `SEEKING FREELANCER` comments; fixtures and tests in `tests/test_hn_freelancer.py`; evidence
   in `docs/sources.md`.
-- [ ] **3C:** Replace or retire the indirect Algora GitHub search.
-- [ ] **3D:** Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
-- [ ] **3E:** Add a separate deterministic `service_domains` classifier without changing
-  opportunity-kind semantics.
-- [ ] **3F:** Research and admit project sources for marketing automation, CRM, lead generation,
-  Sales Ops, RevOps, content automation, reporting, and customer-support automation.
-- [ ] **3G:** Add source confidence, freshness, and degradation metrics.
-- [ ] **3H:** Implement and admit the remaining researched candidates after the earlier admission
-  patterns are stable.
+- [ ] Replace or retire the indirect Algora GitHub search using official evidence.
+- [ ] Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
+- [ ] Freeze the source catalog: no new sources are admitted until Phase 3.2 closes Phase 3.
+
+Acceptance criteria: every enabled source passes `docs/source-admission.md`; the default report
+contains no ordinary employment; health output is truthful for every source; the freeze decision
+is recorded in `docs/sources.md` and `docs/current-work.md`.
+
+### Phase 3.2 — filter and prioritize
+
+- [ ] Add a simple deterministic service-area classifier (`service_domains`) without changing
+  opportunity-kind semantics, covering at least: programming, automation, scraping, AI,
+  marketing, CRM, and RevOps.
+- [ ] Persist and export `service_domains` alongside the existing structured fields.
+- [ ] Add only basic quality and freshness signals (for example source health and recency)
+  to scoring or reporting; no sophisticated metrics in Phase 3.
+- [ ] Close Phase 3 and record the closure evidence.
+
+Acceptance criteria: service-domain labels never reintroduce permanent employment; unknown domains
+stay unknown; deterministic validation remains offline; Phase 3 closes with every gate green.
 
 Completed research prerequisites:
 
@@ -73,14 +88,20 @@ Completed research prerequisites:
 - [x] Research candidate freelance/project sources with public opportunity evidence (catalog in
       `docs/sources.md`).
 
-Candidate sources must pass `docs/source-admission.md`; quantity alone is not an acceptance
-criterion. The authoritative unit order and current execution contract live in
-`docs/current-work.md`. A candidate described as config-only must still be verified against its
-current public format before admission.
+Any source admitted later must pass `docs/source-admission.md`; quantity alone is not an
+acceptance criterion. The authoritative unit order and current execution contract live in
+`docs/current-work.md`.
 
 Marketing and business-operations discovery must target paid projects or contracts where
 automation is useful. Do not reintroduce permanent marketing or sales employment through these
-sources.
+sources or through the service-domain classifier.
+
+### Phase 3 backlog (future, unscheduled)
+
+Researched but deferred until Phase 3 closes and the user re-prioritizes: additional sources
+(Algora official, Dework, DoraHacks, Contra, Upwork, Freelancer.com, and other freelance
+platforms), hackathon sources (MLH, Devpost, Unstop), paid fellowships and ambassador programs,
+Apify-based acquisition, and sophisticated confidence/freshness/degradation metrics.
 
 ## Phase 4 — review workflow and briefing
 

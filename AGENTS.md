@@ -88,6 +88,22 @@ At minimum it must have:
 - isolated failure and health reporting;
 - no dependence on a paid service unless separately enabled and budget-limited.
 
+## Phase 3 scope lock
+
+Phase 3 consists of exactly two blocks, as defined by `docs/roadmap.md` and
+`docs/current-work.md`:
+
+- **3.1 — consolidate essential sources**: preserve the completed Reddit and HN admissions,
+  replace or retire the indirect Algora search, verify Superteam, then freeze the source catalog.
+- **3.2 — filter and prioritize**: a simple deterministic `service_domains` classifier
+  (programming, automation, scraping, AI, marketing, CRM, RevOps) plus persistence/export, only
+  basic quality/freshness signals, and Phase 3 closure.
+
+Former units 3C–3H are retired as independent units. Additional sources, hackathons, Apify
+acquisition, fellowships, ambassador programs, and sophisticated metrics live in the Phase 3
+backlog in `docs/roadmap.md`; do not resurrect them as Phase 3 work without explicit user
+approval.
+
 ## Engineering rules
 
 - Python 3.12 and PowerShell are the supported local environment.

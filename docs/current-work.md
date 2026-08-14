@@ -5,45 +5,54 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 
 ## Current position
 
-- Current phase: **Phase 3 — source quality and expansion**.
+- Current phase: **Phase 3 — source consolidation, filtering, and prioritization** (two blocks:
+  3.1 and 3.2; former units 3C–3H are retired and live in the roadmap backlog).
 - Completed prerequisites: Phases 1 and 2, including all independent review blockers.
-- Current work unit: **3C — replace or retire the indirect Algora GitHub search**.
+- Current work unit: **Phase 3.1 — consolidate essential sources** (remaining items: replace or
+  retire the indirect Algora search, verify Superteam, then freeze the source catalog).
 - Last completed units: **3A — Reddit source expansion** (2026-08-13) and **3B — HN freelancer
   thread admission** (2026-08-14); evidence below.
 - Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
   OmniRoute, and VPS scheduling.
 
-## Work unit 3A — Reddit source expansion
+## Work unit Phase 3.1 — consolidate essential sources
 
 ```text
-Roadmap phase: 3A — Reddit project-source admission
-User outcome: jobbit and slavelabour can contribute paid projects without leaking ordinary jobs
-Files expected to change: config/sources.yaml, the Reddit collector only if configuration is
-  insufficient, sanitized fixtures, focused tests, docs/sources.md, docs/roadmap.md,
-  docs/module-map.md if code ownership changes, CHANGELOG.md
-Acceptance criteria: every admitted feed keeps only requester-side paid opportunities; fixtures
-  cover accepted and rejected title conventions; empty/malformed feeds fail truthfully; stable IDs
-  deduplicate across runs; live smoke evidence is recorded before a source becomes verified
-Tests to add or update: Reddit parser/config tests using offline RSS fixtures
-Live validation: one supervised smoke test per candidate feed after offline gates pass
-Explicit non-goals: HN, Algora, Superteam, service-domain classification, AI, dashboards, outreach,
-  applications, email sending, deployment, paid Apify usage
+Roadmap phase: 3.1 — consolidate essential sources
+User outcome: a small frozen set of verified sources feeds the radar without ordinary jobs
+Files expected to change: collectors/github_bounties.py or its retirement, collectors/opire.py or
+  collectors/scrapling_links.py only as needed for Superteam, config/sources.yaml, sanitized
+  fixtures, focused tests, docs/sources.md, docs/roadmap.md, docs/module-map.md, CHANGELOG.md
+Acceptance criteria: Algora is replaced by official evidence or retired with honest records;
+  Superteam has offline fixtures and explicit opportunity-type mapping; every enabled source
+  passes docs/source-admission.md; the catalog freeze is recorded in this file and sources.md
+Tests to add or update: offline parser tests for any changed extraction
+Live validation: one supervised smoke test per changed source after offline gates pass
+Explicit non-goals: new sources, hackathons, Apify, fellowships, service-domain classification,
+  metrics, AI, dashboards, outreach, deployment
 ```
 
 ### Required implementation sequence
 
-1. Inspect the live public feeds only to confirm their current title/flair conventions.
-2. Save minimal sanitized RSS fixtures; tests must never require network access.
-3. Determine whether `required_flair_prefix` is sufficient. If not, add the smallest typed
-   configuration needed for an allowlist of requester-side prefixes.
-4. Reject worker advertisements, ordinary employment, unpaid requests, and non-opportunity posts
-   before persistence.
-5. Add candidate sources disabled by default while developing.
-6. Run offline tests and Ruff.
-7. Run a supervised live smoke test and inspect accepted records.
-8. Enable only sources that pass `docs/source-admission.md`; otherwise leave them experimental or
-   disabled and record the evidence honestly.
-9. Update the canonical documentation and this file with completion evidence.
+1. Gather official evidence about Algora (official API or its absence) and decide replace or
+   retire; record the decision honestly.
+2. If replacing, add the smallest typed configuration and sanitized fixtures; if retiring, keep
+   ledger evidence with lifecycle status and update the docs.
+3. Verify Superteam with sanitized fixtures and an explicit opportunity-type mapping.
+4. Run offline tests and Ruff, then supervised live smoke tests for changed sources.
+5. Freeze the catalog: mark every source verified/experimental/degraded/retired in
+   `docs/sources.md` and record the freeze here.
+
+## Work unit Phase 3.2 — filter and prioritize (preview)
+
+```text
+Roadmap phase: 3.2 — filter and prioritize
+Scope: simple deterministic service_domains classifier (programming, automation, scraping, AI,
+  marketing, CRM, RevOps) plus persistence/export; only basic quality/freshness signals; then
+  close Phase 3 with recorded evidence
+Constraints: opportunity_kind semantics stay unchanged; unknown domains stay unknown; no
+  permanent employment reintroduced; deterministic offline validation remains available
+```
 
 ## Ordered Phase 3 queue
 
@@ -51,12 +60,12 @@ Explicit non-goals: HN, Algora, Superteam, service-domain classification, AI, da
 |---|---|---|---|
 | 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **Complete** (2026-08-13) |
 | 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **Complete** (2026-08-14) |
-| 3C | Replace or retire indirect Algora GitHub search using official evidence | None beyond Phase 2 | **NEXT** |
-| 3D | Superteam fixture, type mapping, and reliable acquisition path | None beyond Phase 2 | Pending |
-| 3E | Deterministic `service_domains` classification and persistence/export | Stable opportunity kind | Pending |
-| 3F | Research and admit paid marketing/CRM/RevOps/support automation projects | 3E | Pending |
-| 3G | Source confidence, freshness, and degradation metrics | Multiple admitted sources | Pending |
-| 3H | Hackathon, freelance-platform, fellowship, and ambassador candidates | Admission patterns stable | Pending |
+| 3.1 | Consolidate essential sources: replace/retire indirect Algora, verify Superteam, freeze catalog | 3A/3B | **NEXT** |
+| 3.2 | Filter and prioritize: `service_domains` classifier + basic quality/freshness, close Phase 3 | 3.1 | Pending |
+
+Former units 3C–3H are retired as independent units; their scope either folds into 3.1/3.2 or
+moves to the Phase 3 backlog in `docs/roadmap.md` (additional sources, hackathons, Apify,
+fellowships, sophisticated metrics).
 
 Complete one work unit per coherent diff. Do not start the next unit with failing gates or
 undocumented live-source behavior.
@@ -67,7 +76,9 @@ The radar should find paid deliverables such as CRM setup, campaign automation, 
 reporting dashboards, content workflows, customer-support automation, Sales Ops, and RevOps.
 It must not surface permanent marketing-manager, sales-manager, social-media-manager, or generic
 operations employment. `opportunity_kind` controls whether a record belongs in the radar;
-`service_domains` later describes the kind of work.
+`service_domains` (Phase 3.2) describes the kind of work and must cover at least programming,
+automation, scraping, AI, marketing, CRM, and RevOps. Researching additional marketing/CRM/RevOps
+sources is deferred to the Phase 3 backlog.
 
 ## Multi-window rule
 
