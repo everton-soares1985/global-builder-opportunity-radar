@@ -8,15 +8,27 @@
 | Reddit r/slavelabour | Freelance | Public RSS | Verified | Admitted 2026-08-13 (unit 3A). Keep only requester-side `[TASK]` posts via `allowed_title_prefixes`; `[OFFER]` worker ads and mod posts are rejected before persistence. Live smoke: 25 parsed / 9 accepted, all paid task requests; stable `t3_` IDs deduplicate across runs. |
 | HN monthly Freelancer/Seeking-freelancer thread | Freelance/contract | Algolia API | Verified | Admitted 2026-08-14 (unit 3B). Newest monthly thread only; top-level `SEEKING FREELANCER` comments become opportunities, `SEEKING WORK` worker ads, chatter, and flagged comments are rejected. Live smoke: August thread truthful zero (15 parsed / 0 accepted); June thread cross-check accepted the single real requester post of 31 comments. |
 | Hacker News Who is Hiring | Mixed jobs/contracts | Algolia API | Degraded/disabled | Acquisition works, but ordinary jobs cannot yet be separated reliably from contracts and projects. |
-| Algora-related GitHub signals | Open-source bounties | GitHub search spike | Experimental | Not an official Algora feed; keyword stuffing is rejected; replacement by the official Algora API is planned. |
+| Algora-related GitHub signals | Open-source bounties | GitHub search spike | Retired | Retired 2026-08-14 (Phase 3.1): indirect GitHub keyword search fails `source-admission.md`; disabled rather than replaced now. Ledger rows remain as evidence; official integration is backlog. |
 | Opire | Open-source bounties | Scrapling + public Next.js data | Verified | Parses the server-provided `initialRewards` payload from `/home`. |
-| Superteam Earn | Bounties/grants/hackathons | Scrapling browser | Experimental | Public `/earn/all` listing; per-item type mapping is pending; an Apify Actor is a valid fallback. |
+| Superteam Earn | Bounties/grants/hackathons | Scrapling browser | Verified | Verified 2026-08-14 (Phase 3.1). `/earn/listing/` cards parsed offline-testably via `parse_listing_page` (fixture `tests/fixtures/superteam_listing_sample.html`); bounties tab currently yields Bounty-type cards with individual USDC/USDG amounts, no ordinary employment. Freeze run: 22 links matched, stable IDs (0 inserted / 22 updated). |
 
 Experimental sources are allowed to fail without stopping the collection run. Their health is
 visible through `builder-radar health`.
 
 The primary product is not a traditional job aggregator. Any source dominated by permanent jobs
 stays disabled until its parser or classifier can retain only alternative-income opportunities.
+
+### Catalog freeze (Phase 3.1, 2026-08-14)
+
+The source catalog is frozen at Phase 3.1 closure: the enabled set is Reddit r/forhire, Reddit
+r/slavelabour, HN freelancer thread, Opire, and Superteam Earn; `algora_bounties`,
+`hackernews_hiring`, and `reddit_jobbit` stay disabled with the reasons above. No new sources are
+admitted until Phase 3.2 closes Phase 3; candidates stay in the backlog below.
+
+Freeze-run health (2026-08-14): reddit_forhire OK (25 parsed / 5 accepted), hackernews_freelancer
+OK (truthful zero, 15 parsed / 0 accepted), opire_bounties OK (30 accepted), superteam_earn OK
+(22 matched); reddit_slavelabour FAILED with isolated truthful 429 rate-limit (verified source,
+smoke evidence 2026-08-13). A failing source did not stop the remaining sources.
 
 ## Candidate sources (researched, not implemented)
 
@@ -47,7 +59,10 @@ Rejected after implementation: Reddit r/jobbit (unit 3A, 2026-08-13). The `[HIRI
 dominated by yearly salaried job-board reposts (e.g. `/u/Varqu` devitjobs links, `$115k–$300k /
 year`); live smoke showed 10/25 accepted and most were ordinary employment that text-evidence
 quarantine cannot remove reliably. The config entry stays disabled and its smoke rows are kept in
-the ledger with status `discarded` for audit. r/slavelabour from the same research batch was
+the ledger with status `discarded` for audit. Algora-related GitHub signals (Phase 3.1,
+2026-08-14) were retired: the indirect keyword search is a fragile proxy with no official endpoint
+used; the source is disabled and an official Algora path stays in the Phase 3 backlog and is not
+planned for Phase 3. r/slavelabour from the same research batch was
 admitted instead (see enabled sources).
 
 ## Scrapling compatibility note

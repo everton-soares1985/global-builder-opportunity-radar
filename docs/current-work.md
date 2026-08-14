@@ -8,10 +8,11 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 - Current phase: **Phase 3 — source consolidation, filtering, and prioritization** (two blocks:
   3.1 and 3.2; former units 3C–3H are retired and live in the roadmap backlog).
 - Completed prerequisites: Phases 1 and 2, including all independent review blockers.
-- Current work unit: **Phase 3.1 — consolidate essential sources** (remaining items: replace or
-  retire the indirect Algora search, verify Superteam, then freeze the source catalog).
-- Last completed units: **3A — Reddit source expansion** (2026-08-13) and **3B — HN freelancer
-  thread admission** (2026-08-14); evidence below.
+- Current work unit: **Phase 3.2 — filter and prioritize** (service_domains classifier + basic
+  quality/freshness, then close Phase 3).
+- Last completed units: **3A — Reddit source expansion** (2026-08-13), **3B — HN freelancer
+  thread admission** (2026-08-14), and **Phase 3.1 — consolidate essential sources** (2026-08-14,
+  catalog frozen); evidence below.
 - Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
   OmniRoute, and VPS scheduling.
 
@@ -60,8 +61,8 @@ Constraints: opportunity_kind semantics stay unchanged; unknown domains stay unk
 |---|---|---|---|
 | 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **Complete** (2026-08-13) |
 | 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **Complete** (2026-08-14) |
-| 3.1 | Consolidate essential sources: replace/retire indirect Algora, verify Superteam, freeze catalog | 3A/3B | **NEXT** |
-| 3.2 | Filter and prioritize: `service_domains` classifier + basic quality/freshness, close Phase 3 | 3.1 | Pending |
+| 3.1 | Consolidate essential sources: replace/retire indirect Algora, verify Superteam, freeze catalog | 3A/3B | **Complete** (2026-08-14) |
+| 3.2 | Filter and prioritize: `service_domains` classifier + basic quality/freshness, close Phase 3 | 3.1 | **NEXT** |
 
 Former units 3C–3H are retired as independent units; their scope either folds into 3.1/3.2 or
 moves to the Phase 3 backlog in `docs/roadmap.md` (additional sources, hackathons, Apify,
@@ -162,4 +163,38 @@ Remaining risks: requester posts are sparse (roughly 0-2 per monthly thread), so
   report truthful zeros; the broad Who-is-Hiring collector remains disabled and degraded.
 Next work unit: 3C — replace or retire the indirect Algora GitHub search.
 Commit/push status: see git history (separate commit from unit 3A).
+```
+
+## Phase 3.1 completion evidence (2026-08-14)
+
+```text
+Work unit completed: Phase 3.1 — consolidate essential sources.
+Accepted/rejected source evidence:
+  - Algora RETIRED (disabled): the indirect GitHub keyword search fails source-admission.md;
+    no official Algora integration built in Phase 3 (backlog). Config entry kept with a
+    retirement comment; ledger rows remain as evidence.
+  - Superteam ACCEPTED (verified): parse_listing_page extracted as a pure offline-testable
+    parser; sanitized fixture covers card parsing, dedup, non-listing rejection, truthful empty
+    page, and max_items. Live smoke: 22 listing cards, all Bounty-type with individual
+    USDC/USDG amounts, no ordinary employment; stable IDs (inserted=0 updated=22).
+  - Catalog FROZEN: enabled set is reddit_forhire, reddit_slavelabour, hackernews_freelancer,
+    opire_bounties, superteam_earn; algora_bounties, hackernews_hiring, reddit_jobbit disabled
+    with documented reasons. No new sources until Phase 3.2 closes Phase 3.
+Offline tests: 94 tests pass (pytest -q), ruff clean; new tests/test_scrapling_links.py (7
+  tests) over tests/fixtures/superteam_listing_sample.html.
+Live smoke result: freeze run 2026-08-14 — reddit_forhire OK (25 parsed / 5 accepted),
+  hackernews_freelancer OK (truthful zero), opire_bounties OK (30 accepted), superteam_earn OK
+  (22 matched); reddit_slavelabour FAILED with isolated truthful 429 rate-limit (source already
+  verified 2026-08-13). The failing source did not stop the batch.
+Files changed: src/global_builder_radar/collectors/scrapling_links.py (parse_listing_page),
+  src/global_builder_radar/collectors/base.py (prize-pool-after-amount fix), config/sources.yaml,
+  tests/test_scrapling_links.py, tests/fixtures/superteam_listing_sample.html.
+Documentation updated: docs/sources.md (retirement, verification, freeze), docs/roadmap.md,
+  CHANGELOG.md, this file.
+Remaining risks: Superteam uses browser scraping (card selectors may change; the truthful-empty
+  failure mode covers that); the current tab yields only Bounty-type cards, grants/hackathons
+  tabs are backlog; Reddit rate limits remain intermittent but isolated.
+Next work unit: Phase 3.2 — service_domains classifier (programming, automation, scraping, AI,
+  marketing, CRM, RevOps) + basic quality/freshness, then close Phase 3.
+Commit/push status: pending user authorization.
 ```

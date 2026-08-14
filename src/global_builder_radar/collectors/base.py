@@ -70,17 +70,21 @@ def first_email(text: str) -> str | None:
 def first_compensation(text: str) -> str | None:
     """Return the first likely individual payment amount.
 
-    Company-value figures and aggregate prize pools are skipped; only the
-    text immediately before an amount decides its context.
+    Company-value figures and aggregate prize pools are skipped; the text
+    immediately before and after an amount decides its context.
     """
 
     for match in MONEY_PATTERN.finditer(text):
         value = match.group(0).strip().rstrip(".,;:")
         context = text[max(0, match.start() - 120) : min(len(text), match.end() + 120)]
         before = text[max(0, match.start() - 80) : match.start()]
+        after = text[match.end() : min(len(text), match.end() + 40)]
         if _STABLECOIN.search(value):
             return value
         if _POOL_CONTEXT.search(before) and not _INDIVIDUAL_CONTEXT.search(before):
+            continue
+        # "X prize pool" often names the pool after the amount.
+        if _POOL_CONTEXT.search(after) and not _INDIVIDUAL_CONTEXT.search(context):
             continue
         if _BUSINESS_VALUE_CONTEXT.search(before) and not _DIRECT_PAY_CONTEXT.search(before):
             continue

@@ -48,9 +48,9 @@ explicit authorization.
 
 ## Expected first action
 
-Phases 1, 2, and Phase 3 units 3A (Reddit admission) and 3B (HN freelancer thread) are complete.
-The next work is **Phase 3.1** in `docs/current-work.md`: replace or retire the indirect Algora
-GitHub search using official evidence, then verify Superteam with offline fixtures and explicit
-opportunity-type mapping, then freeze the source catalog. Stop after 3.1 is complete and report
-evidence before starting 3.2 unless the user has explicitly requested continued autonomous
-execution.
+Phases 1, 2, Phase 3 units 3A (Reddit admission), 3B (HN freelancer thread), and Phase 3.1
+(source consolidation with a frozen catalog: Algora retired, Superteam verified) are complete.
+The next work is **Phase 3.2** in `docs/current-work.md`: add the simple deterministic
+`service_domains` classifier (programming, automation, scraping, AI, marketing, CRM, RevOps)
+with persistence/export, add only basic quality/freshness signals, then close Phase 3. Do not
+add new sources — the catalog is frozen. Stop after Phase 3 closure and report evidence.

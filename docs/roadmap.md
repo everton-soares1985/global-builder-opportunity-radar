@@ -60,9 +60,15 @@ the Phase 3 backlog below and must not be resurrected without explicit user appr
   Completed 2026-08-14: dedicated `hackernews_freelancer` collector keeps only requester-side
   `SEEKING FREELANCER` comments; fixtures and tests in `tests/test_hn_freelancer.py`; evidence
   in `docs/sources.md`.
-- [ ] Replace or retire the indirect Algora GitHub search using official evidence.
-- [ ] Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
-- [ ] Freeze the source catalog: no new sources are admitted until Phase 3.2 closes Phase 3.
+- [x] Replace or retire the indirect Algora GitHub search using official evidence.
+  Completed 2026-08-14: retired (disabled) — no official Algora endpoint is built in Phase 3;
+  evidence and rationale in `docs/sources.md`.
+- [x] Verify Superteam extraction with offline fixtures and explicit opportunity-type mapping.
+  Completed 2026-08-14: `parse_listing_page` offline fixture/tests (`test_scrapling_links.py`),
+  live smoke 22 listing cards all Bounty-type with individual amounts; evidence in
+  `docs/sources.md`.
+- [x] Freeze the source catalog: no new sources are admitted until Phase 3.2 closes Phase 3.
+  Completed 2026-08-14: freeze and freeze-run health recorded in `docs/sources.md`.
 
 Acceptance criteria: every enabled source passes `docs/source-admission.md`; the default report
 contains no ordinary employment; health output is truthful for every source; the freeze decision

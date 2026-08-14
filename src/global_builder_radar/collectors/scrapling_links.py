@@ -11,14 +11,72 @@ from __future__ import annotations
 import asyncio
 import re
 import time
+from typing import Any
 from urllib.parse import urljoin
 
 from global_builder_radar.collectors.base import Collector, first_compensation
-from global_builder_radar.models import CollectionResult, Opportunity
+from global_builder_radar.models import CollectionResult, Opportunity, SourceConfig
 
 
 def _clean(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
+
+
+def parse_listing_page(
+    page: Any, source: SourceConfig, elapsed_seconds: float
+) -> CollectionResult:
+    """Normalize anchors from a fetched listing page into opportunities.
+
+    Pure parsing: no network access, so sanitized HTML fixtures can test it.
+    A page with zero matching links is reported as a failure because listing
+    sources are expected to carry opportunities on every run.
+    """
+
+    link_pattern = str(source.options.get("link_pattern", ""))
+    seen: set[str] = set()
+    opportunities: list[Opportunity] = []
+    for anchor in page.css("a[href]"):
+        href = str(anchor.attrib.get("href", ""))
+        if link_pattern and link_pattern not in href:
+            continue
+        url = urljoin(source.url, href)
+        if url in seen:
+            continue
+        seen.add(url)
+        context = _clean(anchor.get_all_text(separator=" ", strip=True))
+        title_selector = str(source.options.get("title_selector", ""))
+        title = ""
+        if title_selector:
+            title = _clean(str(anchor.css(title_selector).get() or ""))
+        if not title:
+            title = _clean(anchor.text or "")
+        if not title:
+            title = href.rstrip("/").split("/")[-1].replace("-", " ")
+        opportunities.append(
+            Opportunity(
+                source=source.id,
+                category=source.category,
+                external_id=url,
+                title=title[:500],
+                description=context,
+                url=url,
+                contact_type="platform",
+                compensation_text=first_compensation(context),
+                remote=True,
+                tags=[source.id, "public-listing"],
+                raw_payload={"fetcher": source.options.get("fetcher", "static")},
+            )
+        )
+        if len(opportunities) >= source.max_items:
+            break
+    ok = bool(opportunities)
+    return CollectionResult(
+        source=source.id,
+        opportunities=opportunities,
+        ok=ok,
+        message=f"links_matched={len(opportunities)} pattern={link_pattern!r}",
+        elapsed_seconds=elapsed_seconds,
+    )
 
 
 class ScraplingLinkCollector(Collector):
@@ -33,52 +91,7 @@ class ScraplingLinkCollector(Collector):
                 message=f"Scrapling fetch failed: {type(exc).__name__}: {exc}",
                 elapsed_seconds=time.perf_counter() - started,
             )
-
-        link_pattern = str(self.source.options.get("link_pattern", ""))
-        seen: set[str] = set()
-        opportunities: list[Opportunity] = []
-        for anchor in page.css("a[href]"):
-            href = str(anchor.attrib.get("href", ""))
-            if link_pattern and link_pattern not in href:
-                continue
-            url = urljoin(self.source.url, href)
-            if url in seen:
-                continue
-            seen.add(url)
-            context = _clean(anchor.get_all_text(separator=" ", strip=True))
-            title_selector = str(self.source.options.get("title_selector", ""))
-            title = ""
-            if title_selector:
-                title = _clean(str(anchor.css(title_selector).get() or ""))
-            if not title:
-                title = _clean(anchor.text or "")
-            if not title:
-                title = href.rstrip("/").split("/")[-1].replace("-", " ")
-            opportunities.append(
-                Opportunity(
-                    source=self.source.id,
-                    category=self.source.category,
-                    external_id=url,
-                    title=title[:500],
-                    description=context,
-                    url=url,
-                    contact_type="platform",
-                    compensation_text=first_compensation(context),
-                    remote=True,
-                    tags=[self.source.id, "public-listing"],
-                    raw_payload={"fetcher": self.source.options.get("fetcher", "static")},
-                )
-            )
-            if len(opportunities) >= self.source.max_items:
-                break
-        ok = bool(opportunities)
-        return CollectionResult(
-            source=self.source.id,
-            opportunities=opportunities,
-            ok=ok,
-            message=f"links_matched={len(opportunities)} pattern={link_pattern!r}",
-            elapsed_seconds=time.perf_counter() - started,
-        )
+        return parse_listing_page(page, self.source, time.perf_counter() - started)
 
     def _fetch(self):
         mode = str(self.source.options.get("fetcher", "static")).lower()

@@ -20,6 +20,13 @@ All notable changes to this project will be documented in this file.
   Who-is-Hiring collector stays disabled. Worker ads (`SEEKING WORK`), chatter, and flagged
   comments are rejected before persistence; a month without requester posts reports a truthful
   zero instead of a failure.
+- Phase 3 simplified into two blocks (3.1 consolidate essential sources, 3.2 filter and
+  prioritize); former units 3C–3H retired, their scope moved to the Phase 3 backlog in
+  `docs/roadmap.md`.
+- Phase 3.1 decision (2026-08-14): the indirect Algora GitHub search is retired (disabled) —
+  no official Algora integration is built in Phase 3; Superteam Earn is verified with offline
+  fixtures and live smoke; the source catalog is frozen at Reddit r/forhire, r/slavelabour, HN
+  freelancer thread, Opire, and Superteam Earn until Phase 3.2 closes Phase 3.
 
 ### Added
 
@@ -32,6 +39,10 @@ All notable changes to this project will be documented in this file.
   with a requester-side comment allowlist (`allowed_comment_prefixes`), sanitized thread fixture
   `tests/fixtures/hn_freelancer_thread_sample.json`, and offline parser tests in
   `tests/test_hn_freelancer.py`.
+- `parse_listing_page` in the Scrapling collector: the listing-card normalization is now a pure,
+  offline-testable function with sanitized Superteam fixture
+  `tests/fixtures/superteam_listing_sample.html` and parser tests in
+  `tests/test_scrapling_links.py`.
 
 - Structured evidence extraction (`extraction.py`): compensation amount/range/currency/unit,
   explicit deadlines with source evidence, technology list, effort evidence, and Brazil
@@ -61,6 +72,11 @@ All notable changes to this project will be documented in this file.
 - Detailed reports with descriptions, contacts, compensation evidence, and source links.
 - Canonical mission, module map, source-admission standard, autonomous-agent runbook, delivery
   roadmap, and Qwen handoff.
+
+### Fixed
+
+- `first_compensation` no longer reports aggregate prize pools named after the amount (e.g.
+  "$10,000 prize pool") as individual pay; surfaced by the Superteam fixture.
 
 ### Changed
 
