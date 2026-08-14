@@ -11,8 +11,18 @@ All notable changes to this project will be documented in this file.
 - The Qwen handoff now starts from Phase 3A instead of the already completed Phase 1.
 - Public setup and contributor instructions now use portable repository paths instead of
   developer-specific absolute Windows paths.
+- Phase 3A admission decision (2026-08-13): Reddit r/slavelabour is verified and enabled with a
+  requester-side `[TASK]` title allowlist; Reddit r/jobbit stays disabled after the supervised
+  live smoke showed its `[HIRING]` feed is dominated by yearly salaried job-board reposts. Its
+  smoke rows remain in the ledger with status `discarded` for audit.
 
 ### Added
+
+- Reddit collector option `allowed_title_prefixes` (case-insensitive requester-side allowlist)
+  alongside the legacy single-prefix `required_flair_prefix`.
+- Sanitized offline RSS fixtures for r/jobbit and r/slavelabour covering accepted and rejected
+  title conventions, plus malformed-XML and HTML-block-page bodies; offline parser tests in
+  `tests/test_reddit_rss.py`.
 
 - Structured evidence extraction (`extraction.py`): compensation amount/range/currency/unit,
   explicit deadlines with source evidence, technology list, effort evidence, and Brazil
@@ -78,3 +88,9 @@ All notable changes to this project will be documented in this file.
   disagrees (fixes aggregate figures such as USD 100,100 being claimed for a $50 bounty).
 - Collector compensation selection (`first_compensation`) uses preceding context only, so company
   metrics and prize pools no longer shadow nearby individual amounts.
+- The Reddit feed parser now reports blocked or malformed feed bodies as truthful failures
+  (`feed_parse_failed`) instead of silent empty results: bozo feeds with no entries and non-feed
+  bodies (e.g. HTML block pages parsed with `bozo=0`) are both distinguished from legitimately
+  empty feeds.
+- Compensation enrichment recovers the pay-period unit from the full title/description evidence
+  when the collector snippet loses the suffix (`$5/hr` no longer records unit `fixed`).

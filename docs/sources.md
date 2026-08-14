@@ -5,6 +5,7 @@
 | Source | Category | Initial method | Confidence | Notes |
 |---|---|---|---|---|
 | Reddit r/forhire | Freelance | Public RSS | Verified | Keep only `[Hiring]`; posts may expose email or Reddit DM. |
+| Reddit r/slavelabour | Freelance | Public RSS | Verified | Admitted 2026-08-13 (unit 3A). Keep only requester-side `[TASK]` posts via `allowed_title_prefixes`; `[OFFER]` worker ads and mod posts are rejected before persistence. Live smoke: 25 parsed / 9 accepted, all paid task requests; stable `t3_` IDs deduplicate across runs. |
 | Hacker News Who is Hiring | Mixed jobs/contracts | Algolia API | Degraded/disabled | Acquisition works, but ordinary jobs cannot yet be separated reliably from contracts and projects. |
 | Algora-related GitHub signals | Open-source bounties | GitHub search spike | Experimental | Not an official Algora feed; keyword stuffing is rejected; replacement by the official Algora API is planned. |
 | Opire | Open-source bounties | Scrapling + public Next.js data | Verified | Parses the server-provided `initialRewards` payload from `/home`. |
@@ -23,7 +24,6 @@ Researched 2026-08. Each candidate remains `candidate` until it passes
 
 | Candidate | Category | Planned method | Research notes |
 |---|---|---|---|
-| Reddit r/jobbit, r/slavelabour | freelance | Public RSS (existing collector) | Config-only addition; small but fast-paid tasks. |
 | HN "Ask HN: Freelancer? Seeking freelancer?" | freelance/contract | Algolia API (existing collector) | Monthly thread; config-only via `thread_query`. |
 | Algora official | bounty, contract | GraphQL API (`api.algora.io`) | Replaces the GitHub search spike; official bounties and contract work with values and repos. |
 | Dework | bounty (web3) | Scrapling or internal JSON at `app.dework.xyz/bounties` | Investigate a Next.js-style payload as with Opire. |
@@ -42,6 +42,13 @@ Rejected after research: IssueHunt (pivoted to security bug bounties), Zealy/Gal
 rewards, admin-gated APIs), Fiverr (buyer-oriented, no opportunity feed), `aurumworks`
 hackathon-aggregator actor (deprecated), and Remotive/RemoteOK/WWR/python.org jobs (dominated by
 permanent employment, out of scope per `mission.md`).
+
+Rejected after implementation: Reddit r/jobbit (unit 3A, 2026-08-13). The `[HIRING]` feed is
+dominated by yearly salaried job-board reposts (e.g. `/u/Varqu` devitjobs links, `$115k–$300k /
+year`); live smoke showed 10/25 accepted and most were ordinary employment that text-evidence
+quarantine cannot remove reliably. The config entry stays disabled and its smoke rows are kept in
+the ledger with status `discarded` for audit. r/slavelabour from the same research batch was
+admitted instead (see enabled sources).
 
 ## Scrapling compatibility note
 

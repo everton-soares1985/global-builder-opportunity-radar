@@ -46,8 +46,11 @@ the new fields; extraction tests cover valid, unknown, and misleading examples.
 
 ## Phase 3 — source quality and source expansion
 
-- [ ] **3A:** Admit Reddit `r/jobbit` and `r/slavelabour` with requester-side filtering, offline RSS
+- [x] **3A:** Admit Reddit `r/jobbit` and `r/slavelabour` with requester-side filtering, offline RSS
   fixtures, truthful health behavior, and supervised live evidence.
+  Completed 2026-08-13: r/slavelabour verified and enabled (requester-side `[TASK]` allowlist);
+  r/jobbit rejected after live smoke (feed dominated by yearly salaried reposts); evidence in
+  `docs/sources.md`; parser tests in `tests/test_reddit_rss.py`.
 - [ ] **3B:** Admit the HN monthly freelancer/seeking-freelancer thread with offline fixtures and
   source-specific semantics instead of treating it as the broad Who Is Hiring feed.
 - [ ] **3C:** Replace or retire the indirect Algora GitHub search.

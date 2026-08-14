@@ -7,7 +7,8 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 
 - Current phase: **Phase 3 — source quality and expansion**.
 - Completed prerequisites: Phases 1 and 2, including all independent review blockers.
-- Current work unit: **3A — expand Reddit project sources safely**.
+- Current work unit: **3B — HN monthly freelancer thread admission**.
+- Last completed unit: **3A — Reddit source expansion** (2026-08-13; evidence below).
 - Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
   OmniRoute, and VPS scheduling.
 
@@ -47,8 +48,8 @@ Explicit non-goals: HN, Algora, Superteam, service-domain classification, AI, da
 
 | Unit | Scope | Prerequisite | State |
 |---|---|---|---|
-| 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **NEXT** |
-| 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | Pending |
+| 3A | Reddit `r/jobbit` and `r/slavelabour` admission | Phases 1–2 | **Complete** (2026-08-13) |
+| 3B | HN monthly freelancer/seeking-freelancer thread | 3A patterns/tests | **NEXT** |
 | 3C | Replace or retire indirect Algora GitHub search using official evidence | None beyond Phase 2 | Pending |
 | 3D | Superteam fixture, type mapping, and reliable acquisition path | None beyond Phase 2 | Pending |
 | 3E | Deterministic `service_domains` classification and persistence/export | Stable opportunity kind | Pending |
@@ -93,3 +94,32 @@ Commit/push status:
 
 The agent may implement and validate the current unit autonomously. Commit, push, paid API usage,
 deployment, outreach, applications, and messages still require explicit user authorization.
+
+## Unit 3A completion evidence (2026-08-13)
+
+```text
+Work unit completed: 3A — Reddit project-source admission.
+Accepted/rejected source evidence:
+  - r/slavelabour ACCEPTED (verified): requester-side [TASK] allowlist; live smoke parsed=25
+    accepted=9 (all paid task requests; [OFFER] worker ads and mod posts rejected); stable
+    t3_ IDs deduplicated on re-run (inserted=1 updated=8).
+  - r/jobbit REJECTED (stays disabled): live smoke parsed=25 accepted=10, dominated by yearly
+    salaried job-board reposts ($115k-$300k / year) that text-evidence quarantine cannot remove
+    reliably; its smoke rows moved to status 'discarded' (evidence preserved).
+Offline tests: 80 tests pass (pytest -q), ruff clean; new tests/test_reddit_rss.py covers the
+  allowlist, rejected conventions, empty feed, malformed XML, HTML block page, and stable IDs.
+Live smoke result: both feeds fetched read-only; health output truthful; blocked/malformed
+  bodies now fail truthfully instead of reporting fake empty feeds.
+Files changed: src/global_builder_radar/collectors/reddit.py, src/global_builder_radar/extraction.py
+  (pay-period unit recovery), config/sources.yaml, tests/test_reddit_rss.py,
+  tests/test_extraction_structured.py, tests/fixtures/reddit_{jobbit,slavelabour}_sample.xml,
+  tests/fixtures/reddit_malformed_body.xml, tests/fixtures/reddit_blocked_body.html.
+Documentation updated: docs/sources.md, docs/roadmap.md, docs/module-map.md, CHANGELOG.md,
+  this file.
+Remaining risks: Reddit intermittently rate-limits (HTTP 429) or serves HTML block pages; the
+  collector now reports both truthfully and source isolation keeps the batch running. slavelabour
+  occasionally contains suspicious "easy money" posts; scoring/report review remains the user's
+  gate before any contact.
+Next work unit: 3B — HN monthly freelancer/seeking-freelancer thread.
+Commit/push status: not committed (no user authorization).
+```

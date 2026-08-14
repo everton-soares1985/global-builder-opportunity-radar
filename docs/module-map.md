@@ -26,7 +26,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | Path | Responsibility | Notes |
 |---|---|---|
 | `collectors/base.py` | Collector protocol and shared evidence extraction. | Shared logic must be genuinely cross-source. |
-| `collectors/reddit.py` | Public Reddit RSS acquisition. | Accept project/freelance posts only. |
+| `collectors/reddit.py` | Public Reddit RSS acquisition with a requester-side title allowlist (`allowed_title_prefixes`, legacy `required_flair_prefix`); malformed or blocked feed bodies fail truthfully. | Accept project/freelance posts only. |
 | `collectors/hackernews.py` | Hacker News monthly thread acquisition. | Disabled until contract-only filtering is reliable. |
 | `collectors/github_bounties.py` | Experimental GitHub bounty discovery. | Not an official Algora feed. |
 | `collectors/opire.py` | Opire public Next.js payload parsing; reward amount resolution prefers explicit title evidence over disagreeing `pendingPrice`. | Preserve reward IDs and repository evidence. |
@@ -55,6 +55,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | `tests/test_review_findings.py` | Offline regressions for every blocking item in `docs/review-findings.md`. |
 | `tests/test_scoring.py` | Deterministic ranking behavior. |
 | `tests/test_storage.py` | Upsert, filtering, status, and persistence. |
+| `tests/test_reddit_rss.py` | Reddit RSS admission: requester-side allowlist, rejected conventions, empty/malformed/blocked feeds, stable IDs. |
 | `tests/test_opire.py` | Opire payload parsing. |
 
 New source parsers require a sanitized offline fixture under `tests/fixtures/` and focused parser

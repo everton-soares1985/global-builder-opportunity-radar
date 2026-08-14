@@ -94,6 +94,22 @@ def test_enrich_keeps_collector_provided_values() -> None:
     assert opportunity.brazil_eligibility is BrazilEligibility.ELIGIBLE
 
 
+def test_enrich_recovers_pay_period_lost_in_snippet() -> None:
+    opportunity = Opportunity(
+        source="test",
+        category=OpportunityCategory.FREELANCE,
+        title="[TASK] Canva Graphic Designer for Creative Brand - $5/hr",
+        description="Weekly creative work, paid per delivered batch.",
+        url="https://example.com/task",
+        compensation_text="$5",
+    )
+    enrich_opportunity(opportunity)
+
+    assert opportunity.compensation_amount_min == 5.0
+    assert opportunity.compensation_currency == "USD"
+    assert opportunity.compensation_unit == "hourly"
+
+
 def test_enrich_leaves_unknown_fields_unknown() -> None:
     opportunity = Opportunity(
         source="test",

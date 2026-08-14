@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>r/jobbit sanitized sample</title>
+  <link href="https://www.reddit.com/r/jobbit/new/"/>
+  <updated>2026-08-13T12:00:00+00:00</updated>
+  <entry>
+    <title>[HIRING] Python automation contractor for CRM rollout [$50/hr]</title>
+    <id>t3_exjobbit1</id>
+    <link href="https://www.reddit.com/r/jobbit/comments/exjobbit1/fixture/"/>
+    <published>2026-08-12T09:30:00+00:00</published>
+    <updated>2026-08-12T09:30:00+00:00</updated>
+    <author><name>/u/example_requester</name></author>
+    <content type="html">&lt;p&gt;Looking for a contractor to automate our CRM lead sync.
+      Budget $50/hr, remote, 3-month project. Contact jobs@example.com&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[Hiring] Freelance data pipeline builder ($2,000 fixed)</title>
+    <id>t3_exjobbit2</id>
+    <link href="https://www.reddit.com/r/jobbit/comments/exjobbit2/fixture/"/>
+    <published>2026-08-12T10:00:00+00:00</published>
+    <updated>2026-08-12T10:00:00+00:00</updated>
+    <author><name>/u/example_requester_two</name></author>
+    <content type="html">&lt;p&gt;Fixed price project building an ETL pipeline. $2,000 on delivery.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[For Hire] Experienced developer looking for work</title>
+    <id>t3_exjobbit3</id>
+    <link href="https://www.reddit.com/r/jobbit/comments/exjobbit3/fixture/"/>
+    <published>2026-08-12T11:00:00+00:00</published>
+    <updated>2026-08-12T11:00:00+00:00</updated>
+    <author><name>/u/example_worker</name></author>
+    <content type="html">&lt;p&gt;I build websites. Hire me.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>Why am I getting 0 callbacks after 200+ applications?</title>
+    <id>t3_exjobbit4</id>
+    <link href="https://www.reddit.com/r/jobbit/comments/exjobbit4/fixture/"/>
+    <published>2026-08-12T12:00:00+00:00</published>
+    <updated>2026-08-12T12:00:00+00:00</updated>
+    <author><name>/u/example_chatter</name></author>
+    <content type="html">&lt;p&gt;Discussion only, no opportunity here.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[SUMMARY FOR HIRE POST] For Hire only here</title>
+    <id>t3_exjobbit5</id>
+    <link href="https://www.reddit.com/r/jobbit/comments/exjobbit5/fixture/"/>
+    <published>2026-08-12T13:00:00+00:00</published>
+    <updated>2026-08-12T13:00:00+00:00</updated>
+    <author><name>/u/example_mod</name></author>
+    <content type="html">&lt;p&gt;Moderator summary post.&lt;/p&gt;</content>
+  </entry>
+</feed>

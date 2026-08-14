@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>r/slavelabour sanitized sample</title>
+  <link href="https://www.reddit.com/r/slavelabour/new/"/>
+  <updated>2026-08-13T12:00:00+00:00</updated>
+  <entry>
+    <title>[TASK] Build a Python web scraper for product prices - $40</title>
+    <id>t3_exslab1</id>
+    <link href="https://www.reddit.com/r/slavelabour/comments/exslab1/fixture/"/>
+    <published>2026-08-12T08:00:00+00:00</published>
+    <updated>2026-08-12T08:00:00+00:00</updated>
+    <author><name>/u/example_requester</name></author>
+    <content type="html">&lt;p&gt;I will pay $40 USD via PayPal for a scraper of 500 product
+      pages. Contact tasks@example.com&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[Task] Rename 3,000 pictures to match displayed names for $20</title>
+    <id>t3_exslab2</id>
+    <link href="https://www.reddit.com/r/slavelabour/comments/exslab2/fixture/"/>
+    <published>2026-08-12T09:00:00+00:00</published>
+    <updated>2026-08-12T09:00:00+00:00</updated>
+    <author><name>/u/example_requester_two</name></author>
+    <content type="html">&lt;p&gt;Bulk rename task, $20 on completion.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[OFFER] I will automate your repetitive tasks from $15</title>
+    <id>t3_exslab3</id>
+    <link href="https://www.reddit.com/r/slavelabour/comments/exslab3/fixture/"/>
+    <published>2026-08-12T10:00:00+00:00</published>
+    <updated>2026-08-12T10:00:00+00:00</updated>
+    <author><name>/u/example_worker</name></author>
+    <content type="html">&lt;p&gt;Worker advertisement offering services.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[offer] virtual assistant available</title>
+    <id>t3_exslab4</id>
+    <link href="https://www.reddit.com/r/slavelabour/comments/exslab4/fixture/"/>
+    <published>2026-08-12T11:00:00+00:00</published>
+    <updated>2026-08-12T11:00:00+00:00</updated>
+    <author><name>/u/example_worker_two</name></author>
+    <content type="html">&lt;p&gt;Another worker advertisement.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>[MOD POST] Weekly rules reminder</title>
+    <id>t3_exslab5</id>
+    <link href="https://www.reddit.com/r/slavelabour/comments/exslab5/fixture/"/>
+    <published>2026-08-12T12:00:00+00:00</published>
+    <updated>2026-08-12T12:00:00+00:00</updated>
+    <author><name>/u/example_mod</name></author>
+    <content type="html">&lt;p&gt;Moderator announcement, not an opportunity.&lt;/p&gt;</content>
+  </entry>
+</feed>

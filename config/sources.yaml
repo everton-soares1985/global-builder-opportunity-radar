@@ -9,6 +9,33 @@ sources:
     options:
       required_flair_prefix: "[Hiring]"
 
+  - id: reddit_jobbit
+    # Rejected (Phase 3A): live smoke showed [HIRING] is dominated by yearly
+    # salaried job-board reposts that slip past text-evidence quarantine.
+    # See docs/sources.md for the evidence.
+    enabled: false
+    collector: reddit_rss
+    category: freelance
+    url: https://www.reddit.com/r/jobbit/new/.rss
+    max_items: 50
+    timeout_seconds: 30
+    options:
+      allowed_title_prefixes:
+        - "[Hiring]"
+
+  - id: reddit_slavelabour
+    # Verified (Phase 3A): requester-side [TASK] posts only; live smoke on
+    # 2026-08-13 passed docs/source-admission.md (see docs/sources.md).
+    enabled: true
+    collector: reddit_rss
+    category: freelance
+    url: https://www.reddit.com/r/slavelabour/new/.rss
+    max_items: 50
+    timeout_seconds: 30
+    options:
+      allowed_title_prefixes:
+        - "[TASK]"
+
   - id: hackernews_hiring
     # Disabled until the collector can retain contracts/projects while excluding ordinary jobs.
     enabled: false

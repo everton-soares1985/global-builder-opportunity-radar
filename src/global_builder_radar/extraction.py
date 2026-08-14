@@ -241,6 +241,15 @@ def extract_effort(text: str) -> str | None:
     return f"{match.group('amount')} {match.group('unit').lower()}"
 
 
+def explicit_unit(text: str) -> str | None:
+    """Return the first explicit pay-period marker, or None when absent."""
+
+    for unit_name, pattern in _UNIT_PATTERNS:
+        if pattern.search(text):
+            return unit_name
+    return None
+
+
 def assess_brazil_eligibility(text: str) -> BrazilEligibility:
     """Classify Brazil eligibility conservatively from explicit evidence.
 
@@ -279,6 +288,10 @@ def enrich_opportunity(opportunity: Opportunity) -> None:
         amount_min, amount_max, currency, unit = parse_compensation(
             opportunity.compensation_text
         )
+        if unit == "fixed":
+            # Collector snippets can lose the pay-period suffix ("$5/hr" -> "$5"),
+            # so an explicit marker in the full evidence wins over the default.
+            unit = explicit_unit(haystack) or unit
         if opportunity.compensation_amount_min is None:
             opportunity.compensation_amount_min = amount_min
         if opportunity.compensation_amount_max is None:
