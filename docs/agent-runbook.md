@@ -2,9 +2,10 @@
 
 ## Session start
 
+Open PowerShell in the repository root, then run:
+
 ```powershell
-cd C:\PROGRAMACAO\Global_Builder_Radar
-.venv\Scripts\activate
+.\.venv\Scripts\Activate.ps1
 git status --short
 git branch --show-current
 python -X utf8 -m pytest

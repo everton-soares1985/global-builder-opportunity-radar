@@ -124,8 +124,10 @@ python -X utf8 radar.py report --paid-only --format detailed --limit 10
 Before a commit or push, run:
 
 ```powershell
-C:\PROGRAMACAO\GitHub_Project_Publisher\.venv\Scripts\project-publisher.exe check .
+project-publisher check .
 ```
+
+This final command requires the optional GrowthTech Publisher CLI.
 
 Never weaken, skip, or delete a failing test merely to make a gate green.
 

@@ -52,9 +52,10 @@ See the [product mission](docs/mission.md), [architecture](docs/architecture.md)
 ## Quick start
 
 ```powershell
-cd C:\PROGRAMACAO\Global_Builder_Radar
-python -m venv .venv
-.venv\Scripts\activate
+git clone https://github.com/everton-soares1985/global-builder-opportunity-radar.git
+Set-Location global-builder-opportunity-radar
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -X utf8 -m pip install -e ".[dev]"
 python -X utf8 -m global_builder_radar sources
 python -X utf8 -m global_builder_radar collect

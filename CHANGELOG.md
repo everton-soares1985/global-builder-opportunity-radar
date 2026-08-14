@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Public setup and contributor instructions now use portable repository paths instead of
+  developer-specific absolute Windows paths.
+
 ### Added
 
 - Structured evidence extraction (`extraction.py`): compensation amount/range/currency/unit,
