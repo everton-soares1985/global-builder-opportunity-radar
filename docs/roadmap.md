@@ -124,13 +124,20 @@ Apify-based acquisition, and sophisticated confidence/freshness/degradation metr
 
 ## Phase 4 — review workflow and briefing
 
-- [ ] Add lifecycle commands: shortlist, dismiss, actioned, expired.
-- [ ] Prevent previously dismissed or expired records from reappearing as new.
-- [ ] Generate a concise periodic briefing with reasons, risks, and next action.
-- [ ] Add configurable minimum quality and freshness thresholds.
+- [x] **4A — local HTML briefing:** generate one private, self-contained browser report from the
+  SQLite ledger. Every eligible record remains visible and its card presents evidence, unknowns,
+  risks, deterministic next action, and the original source link. Contract:
+  [`briefing-contract.md`](briefing-contract.md).
+  Completed 2026-08-15: `radar.py briefing` (read-only) with pure renderer `briefing.py`,
+  factual grouping, honest unknowns, hostile-text escaping; evidence in `docs/current-work.md`.
+- [ ] **4B — lifecycle (only after real use):** add shortlist, dismiss, actioned, and expired
+  commands, then prevent user decisions from reappearing as new.
+- [ ] Add configurable minimum quality and freshness thresholds when actual review behavior proves
+  their needed semantics.
 
-Acceptance criteria: the user can process a shortlist without editing SQLite manually and repeated
-runs preserve decisions.
+Phase 4A acceptance criteria: a user can open one local HTML file and review all currently
+eligible opportunities without editing SQLite or reading terminal cards. Phase 4B acceptance
+criteria: repeated runs preserve explicit user decisions.
 
 ## Phase 5 — optional AI enrichment
 

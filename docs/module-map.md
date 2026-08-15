@@ -43,6 +43,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | `pipeline.py` | Concurrent collection, failure isolation, scoring, and persistence coordination. | One source failure cannot abort the batch. |
 | `scoring.py` | Deterministic profile score plus report-only basic quality/freshness signals. | Explainable and usable without AI. |
 | `storage.py` | SQLite schema, upsert, lifecycle, health, and queries. | SQLite remains the canonical local ledger. |
+| `briefing.py` | Pure deterministic renderer of the Phase 4A self-contained HTML briefing; escapes every source-derived value and keeps unknowns as `Unknown`. | Render-only: no network, no AI, no database writes. |
 | `logging_config.py` | Structured runtime logging. | No application decisions. |
 
 ## Tests
@@ -62,6 +63,7 @@ This map defines ownership boundaries. Read the owning section before modifying 
 | `tests/test_scrapling_links.py` | Superteam-style listing parsing: card titles, dedup, pattern rejection, truthful empty page, max_items, prize-pool honesty. |
 | `tests/test_service_domains.py` | Seven-domain classification: per-domain signals, boundaries, unknown stays unknown, kind independence. |
 | `tests/test_github_issues.py` | GitHub issue URL mapping, zero-bounty label detection, closed/zero verdict from API payloads. |
+| `tests/test_briefing.py` | Briefing renderer: hostile-text escaping, card evidence and honest unknowns, factual grouping/filters, disabled-source exclusion, no ledger mutation. |
 | `tests/test_opire.py` | Opire payload parsing. |
 
 New source parsers require a sanitized offline fixture under `tests/fixtures/` and focused parser

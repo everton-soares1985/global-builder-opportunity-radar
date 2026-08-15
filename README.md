@@ -87,6 +87,7 @@ Copy `.env.example` to `.env` only when optional credentials are required. Never
 | `collect` | Collect all enabled sources or selected source IDs. |
 | `verify-github-issues` | Hide closed/dead GitHub issues and strip zero-bounty pay (read-only). |
 | `report` | Rank and display/export opportunities. |
+| `briefing` | Render a private, self-contained HTML briefing from the ledger (read-only). |
 | `health` | Show the last real result for every attempted source. |
 
 Useful report filters can be combined:
@@ -101,6 +102,16 @@ The table output includes terminal hyperlinks. The `detailed` format shows the d
 contact path, compensation evidence, and full source URL for each result.
 Legacy `direct_job` records are hidden by default. Use `--include-traditional` only to audit the
 historical ledger; it is not part of the primary product feed.
+
+The `briefing` command renders every eligible opportunity from the ledger into one private,
+self-contained HTML page (default `reports/briefing.html`) with stored evidence, honest
+`Unknown` states, deterministic "Why it surfaced" / "Next action" notes, and links to the
+original listings. It never collects, mutates the ledger, or calls any remote service:
+
+```powershell
+python -X utf8 radar.py briefing --open
+python -X utf8 radar.py briefing --paid-only --max-age 14 --limit 50
+```
 
 ## Development
 

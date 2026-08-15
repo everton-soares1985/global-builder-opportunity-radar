@@ -32,8 +32,9 @@ Apify, fellowships, sophisticated metrics) without explicit approval.
 Use docs/current-work.md as the operational queue and docs/roadmap.md as the phase-level plan.
 Implement only the work unit marked NEXT, test it, update the canonical documentation, and report
 the result using docs/agent-runbook.md. Continue one work unit at a time when all gates are green.
-Do not rewrite working architecture or start downstream Spark, Gmail, Hermes, VPS, dashboard, or
-outreach work before their roadmap prerequisites.
+Do not rewrite working architecture or start downstream Spark, Gmail, Hermes, VPS, hosted dashboard,
+or outreach work before their roadmap prerequisites. A static, private local HTML briefing is the
+one authorized exception; follow `docs/briefing-contract.md` exactly.
 
 Before new roadmap work, read docs/review-findings.md and resolve every open blocking finding with
 offline regression tests. Independent review blockers override previously checked roadmap items.
@@ -51,7 +52,10 @@ explicit authorization.
 Phases 1, 2, and 3 are complete. Phase 3 closed on 2026-08-14 with a frozen source catalog
 (Reddit r/forhire, r/slavelabour, HN freelancer thread, Opire, Superteam Earn enabled; Algora
 retired) and a deterministic seven-domain `service_domains` classifier plus basic
-quality/freshness report signals. The next roadmap phase is **Phase 4 — review workflow and
-briefing**, but it starts only with explicit user authorization; the Phase 3 backlog (additional
-sources, hackathons, Apify, fellowships, sophisticated metrics) also requires approval. Report
-before starting anything new.
+quality/freshness report signals. The report-hygiene correction is committed as `5f3d469`.
+
+The user explicitly authorized **Phase 4A — local HTML briefing**. Read
+`docs/briefing-contract.md`, then implement that one bounded unit. The Phase 3 backlog (additional
+sources, hackathons, Apify, fellowships, sophisticated metrics), lifecycle features, AI, hosted
+dashboard, and downstream integrations remain unapproved. Report after 4A; do not start anything
+else.

@@ -5,17 +5,39 @@ and architecture remain canonical in the other documents listed by `AGENTS.md`.
 
 ## Current position
 
-- Current phase: **Phase 3 — CLOSED** (2026-08-14). Former units 3C–3H are retired and live
-  in the roadmap backlog.
+- Current phase: **Phase 4A — local HTML briefing** implemented and validated (2026-08-15);
+  awaiting Everton's real-world review and an explicit commit authorization. Phase 3 remains
+  closed; its former units 3C–3H are retired and live in the roadmap backlog.
 - Completed prerequisites: Phases 1, 2, and 3, including all independent review blockers.
-- Current work unit: **none** — Phase 3 is closed; a small report-hygiene fix was completed
-  after 3.2 (evidence below) and awaits commit authorization. The next roadmap phase (review
-  workflow and briefing) starts only with explicit user authorization.
+- Current work unit: **4A — local HTML briefing** — delivered per
+  [`briefing-contract.md`](briefing-contract.md); completion evidence below. Stop here: do not
+  start lifecycle actions (4B) or any AI integration without a separate explicit decision.
+  The post-Phase-3 report-hygiene correction is committed as `5f3d469`; do not reopen it.
 - Last completed units: **3A — Reddit source expansion** (2026-08-13), **3B — HN freelancer
   thread admission** (2026-08-14), **Phase 3.1 — consolidate essential sources** (2026-08-14,
   catalog frozen), and **Phase 3.2 — filter and prioritize** (2026-08-14); evidence below.
-- Downstream integrations remain blocked: dashboard, AI enrichment, Sheets, Spark/Gmail, Hermes,
-  OmniRoute, and VPS scheduling.
+- Downstream integrations remain blocked: hosted dashboard, AI enrichment, Sheets, Spark/Gmail,
+  Hermes, OmniRoute, and VPS scheduling. A static local HTML report is authorized and is not a
+  hosted dashboard.
+
+## Work unit 4A — local HTML briefing (COMPLETE 2026-08-15)
+
+```text
+Roadmap phase: 4A — local HTML briefing
+User outcome: one private, polished HTML file opens locally and shows every eligible opportunity
+with its evidence, unknowns, next action, and source link; no terminal review required.
+Canonical contract: docs/briefing-contract.md
+Files expected to change: cli.py, a focused briefing renderer module, tests/, README.md,
+docs/module-map.md, CHANGELOG.md, .gitignore, this file.
+Acceptance criteria: every card is evidence-backed and escaped; no SQLite mutation; no server,
+AI, profile inference, deployment, or external side effect; generated report is Git-ignored.
+Tests to add: pure HTML renderer, factual grouping, unknown evidence, hostile text escaping,
+enabled-source filtering, and no store mutation.
+Live validation: generate a briefing from the real local ledger after offline gates.
+Explicit non-goals: lifecycle, AI, tailored applications, email/outreach, Sheets, domain hosting,
+dashboard server, Hermes, OmniRoute, VPS.
+Commit/push: requires a separate explicit user authorization after Qwen reports the diff and gates.
+```
 
 ## Work unit Phase 3.1 — consolidate essential sources
 
@@ -262,5 +284,45 @@ Files changed: src/global_builder_radar/github_issues.py (new), cli.py, storage.
 Remaining risks: issues can close between verifications — rerun verify-github-issues before
   acting on old rows; closed-state evidence exists only at GitHub, not in stored payloads.
 Next work unit: none — await user assessment of the cleaned report before any Phase 4 decision.
+Commit/push status: pending user authorization.
+```
+
+## Unit 4A completion evidence (2026-08-15)
+
+```text
+Work unit completed: 4A — local HTML briefing.
+Scope delivered:
+  - briefing.py: pure deterministic renderer. Every source-derived value is HTML-escaped;
+    non-HTTP(S) URLs never become links; unknown values render as `Unknown`; no raw payload,
+    credential, or hidden metadata reaches the HTML. Cards carry title, source, kind, domains,
+    score, age, quality, pay, deadline, Brazil eligibility, location/remote, technologies,
+    effort, contact path, description excerpt with full text in a native <details>, a factual
+    "Why it surfaced" list, a factual "Next action" list, and an "Open original opportunity"
+    link (new tab, rel=noopener).
+  - Factual grouping: Ready to review (stored pay evidence), Needs details (missing evidence),
+    Brazil unavailable (explicitly ineligible); header shows generation time, applied filters,
+    card count, and an evidence disclaimer. Inline vanilla-JS text/source filtering only; no
+    framework, CDN, font, image, analytics, or server.
+  - cli.py `briefing` command: reads the SQLite ledger read-only (enabled sources only,
+    non-discarded, alternative-income), writes self-contained HTML (default
+    reports/briefing.html), prints path and truthful card/omitted counts. Filters: --paid-only,
+    --min-score, --max-age, --limit (0 = unlimited); --open opens the finished file locally.
+    No collection, no GitHub verification, no SQLite mutation, no AI, no other side effects.
+Offline tests: 129 tests pass (pytest -q), ruff clean; new tests/test_briefing.py covers
+  hostile-text escaping, unsafe-URL neutralization, required card evidence, honest unknown
+  states, factual grouping and filters, disabled-source exclusion via the CLI, truthful empty
+  counts, and no-ledger-mutation.
+Live validation: `radar.py briefing` against the real local ledger produced 81 cards
+  (Ready to review + Needs details; no Brazil-unavailable rows) at reports/briefing.html;
+  `--open` opened the file in the default browser; HTML inspected for groups, disclaimer,
+  and absence of external resources or raw payloads.
+Files changed: src/global_builder_radar/briefing.py (new), cli.py, tests/test_briefing.py
+  (new), README.md, docs/module-map.md, docs/roadmap.md, CHANGELOG.md, this file.
+  (`reports/*.html` was already Git-ignored.)
+Remaining risks: descriptions from forum sources can be noisy; grouping uses only stored pay
+  and eligibility evidence, so "Ready to review" still requires manual confirmation against
+  the original listing; the ledger snapshot predates a fresh collect run.
+Next work unit: none — await Everton's review of the HTML briefing; 4B lifecycle commands and
+  any AI briefs require separate explicit authorization (see briefing-contract.md follow-on).
 Commit/push status: pending user authorization.
 ```

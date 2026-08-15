@@ -16,4 +16,5 @@ build/
 data/raw/
 reports/*.json
 reports/*.csv
+reports/*.html
 .agent/reports/

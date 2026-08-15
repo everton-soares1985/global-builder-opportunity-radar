@@ -39,6 +39,15 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Phase 4A (2026-08-15): `radar.py briefing` renders every eligible, non-discarded opportunity
+  from enabled sources into one private, self-contained HTML report (default
+  `reports/briefing.html`). Cards show stored evidence (pay, deadline, Brazil eligibility,
+  location/remote, technologies, effort, contact path), honest `Unknown` states, deterministic
+  "Why it surfaced" and "Next action" notes, and an "Open original opportunity" link. Optional
+  filters: `--paid-only`, `--min-score`, `--max-age`, `--limit` (0 = unlimited); `--open` opens
+  the finished file in the default browser. The command is read-only: no collection, no GitHub
+  verification, no SQLite mutation, no AI, no external side effects. Renderer is the pure,
+  offline-testable module `briefing.py`; tests in `tests/test_briefing.py`.
 - Reddit collector option `allowed_title_prefixes` (case-insensitive requester-side allowlist)
   alongside the legacy single-prefix `required_flair_prefix`.
 - Sanitized offline RSS fixtures for r/jobbit and r/slavelabour covering accepted and rejected

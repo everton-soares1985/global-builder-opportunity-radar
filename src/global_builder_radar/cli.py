@@ -11,6 +11,7 @@ import asyncio
 import csv
 import json
 import os
+import webbrowser
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
@@ -22,6 +23,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from global_builder_radar.briefing import filter_views, render_briefing, row_view
 from global_builder_radar.config import (
     database_path,
     load_profile_rules,
@@ -239,6 +241,64 @@ def report(
                 writer.writeheader()
                 writer.writerows(normalized)
     console.print(f"Exported {len(normalized)} opportunities to {output}")
+
+
+@app.command()
+def briefing(
+    output: Annotated[Path, typer.Option(help="Output HTML path.")] = Path(
+        "reports/briefing.html"
+    ),
+    limit: Annotated[
+        int, typer.Option(min=0, help="Maximum cards to render; 0 means unlimited.")
+    ] = 0,
+    min_score: Annotated[float, typer.Option()] = 0,
+    paid_only: Annotated[bool, typer.Option("--paid-only")] = False,
+    max_age: Annotated[
+        int | None, typer.Option(min=1, help="Only render cards at most N days old.")
+    ] = None,
+    open_browser: Annotated[
+        bool, typer.Option("--open", help="Open the finished file in the default browser.")
+    ] = False,
+) -> None:
+    """Render a private, self-contained HTML briefing from the local ledger.
+
+    Read-only: it never collects sources, verifies GitHub, mutates SQLite, or
+    calls any external service beyond the optional local browser open.
+    """
+    config = load_radar_config()
+    enabled = [source.id for source in config.sources if source.enabled]
+    rows = _store().list_opportunities(
+        limit=2**31,
+        min_score=min_score,
+        enabled_sources=enabled,
+        paid_only=paid_only,
+    )
+    now = datetime.now(UTC)
+    eligible = [row_view(dict(row), now) for row in rows]
+    selected = filter_views(
+        eligible,
+        min_score=min_score,
+        paid_only=paid_only,
+        max_age_days=max_age,
+        limit=limit,
+    )
+    document = render_briefing(
+        selected,
+        generated_at=now,
+        paid_only=paid_only,
+        min_score=min_score,
+        max_age_days=max_age,
+        limit=limit,
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(document, encoding="utf-8")
+    omitted = len(eligible) - len(selected)
+    summary = f"Briefing written: {output} — {len(selected)} card(s)"
+    if omitted:
+        summary += f", {omitted} omitted by filters"
+    console.print(summary)
+    if open_browser:
+        webbrowser.open(output.resolve().as_uri())
 
 
 @app.command("verify-github-issues")
