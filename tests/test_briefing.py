@@ -228,7 +228,7 @@ def test_briefing_hides_disabled_sources_by_default(tmp_path: Path, monkeypatch)
     assert "Enabled bounty" in html
     assert "Retired source bounty" not in html
     assert "$999" not in html
-    assert "1 card(s)" in result.output
+    assert "1 card(s)" in " ".join(result.output.split())
 
 
 def test_briefing_does_not_mutate_ledger(tmp_path: Path, monkeypatch) -> None:
@@ -254,6 +254,6 @@ def test_briefing_filters_report_truthful_counts(tmp_path: Path, monkeypatch) ->
         ],
     )
     assert result.exit_code == 0
-    assert "0 card(s)" in result.output
+    assert "0 card(s)" in " ".join(result.output.split())
     html = (tmp_path / "briefing.html").read_text(encoding="utf-8")
     assert "No eligible opportunities match the current filters." in html
